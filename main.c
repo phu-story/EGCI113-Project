@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include <conio.h>
 
 #define FileName "PatientData"
 
-struct PatientData {
+struct PatientDataStruct {
     char Id[8], FirstName[30], LastName[30], fileName[30];
-} PatientData;
+};
 
 // Global Function
 void patientRegitration();
@@ -13,23 +14,30 @@ void patientList();
 void patientModify();
 
 void clear() {
-    system("clear"); // Clear cmd for unix
+    //system("clear"); // Clear cmd for unix
     system("cls"); // Clear cmd for window
+    //printf("\n\n\n\n\n\n\n\n\n\n");
+    return;
 }
 
 void pressAnyKeyToContinute() {
-    printf("\nPress any key to continute...");
+    printf("\nPress any key to continue...");
     getch();
+
+    return;
 }
 
 // Global Variable
+struct PatientDataStruct PatientData;
 int recordSize = 0;
+FILE *fileData;
 
 int main() {
+    printf("Loading...");
+
     char menu = 0;
 
     // Check File
-    FILE *fileData;
     fileData = fopen(FileName, "rb+");
     if(fileData == NULL) {
         fileData = fopen(FileName, "wb+");
@@ -68,6 +76,7 @@ int main() {
             patientModify(fileData);
         } else {
             printf("\nWrong Command.");
+            pressAnyKeyToContinute();
         }
     }
 
@@ -78,27 +87,70 @@ int main() {
     return 0;
 }
 
-void patientRegitration(fileData) {
+void patientRegitration() {
+    struct PatientDataStruct NewPatientData;
+    char action;
+
     printf("-=-=-=-=-=-=- Patient Regitration -=-=-=-=-=-=-\n");
 
-    printf("Enter patient's ID number: ");
-    scanf("%s", &PatientData.Id);
+    printf("Enter patient's ID: ");
+    scanf("%s", &NewPatientData.Id);
 
     printf("Enter patient's firstname: ");
-    scanf("%s", &PatientData.FirstName);
+    scanf("%s", &NewPatientData.FirstName);
 
     printf("Enter patient's lastname: ");
-    scanf("%s", &PatientData.LastName);
+    scanf("%s", &NewPatientData.LastName);
+
+    patientRegitrationCheckDuplicatePatientId:
+
+    // Check duplicate patient Id
+    rewind(fileData);
+    while (fread(&PatientData, recordSize, 1, fileData) == 1) {
+        if(strcmp(NewPatientData.Id, PatientData.Id) == 0) {
+            printf("\nPatient Id %s already exist.\n", NewPatientData.Id);
+            printf("Do you want to replace exist patient data or change patient Id?\n");
+            printf("Exit and do not save: 0\n");
+            printf("Replace Exist Patient Data: 1\n");
+            printf("Change Patient Id: 2\n");
+            printf("What action do you want to make?: ");
+
+            action = getch();
+
+            printf("%c\n\n", action);
+
+            if(action == '0') {
+                printf("\n\nNoting change.");
+                return pressAnyKeyToContinute();
+            } else if(action == '1') {
+                fseek(fileData, -recordSize, SEEK_CUR);
+                fwrite(&NewPatientData, recordSize, 1, fileData);
+
+                printf("\n\nReplace Patient Data Success.");
+                return pressAnyKeyToContinute();
+            } else if(action == '2') {
+                printf("Enter NEW patient's ID: ");
+                scanf("%s", &NewPatientData.Id);
+
+                goto patientRegitrationCheckDuplicatePatientId;
+            } else {
+                printf("Wrong Action!");
+                goto patientRegitrationCheckDuplicatePatientId;
+            }
+
+            break;
+        }
+    }
 
     rewind(fileData);
     fseek(fileData, 0, SEEK_END);
-    fwrite(&PatientData, recordSize, 1, fileData);
+    fwrite(&NewPatientData, recordSize, 1, fileData);
 
     printf("\n\nSave Patient Data Success.");
-    pressAnyKeyToContinute();
+    return pressAnyKeyToContinute();
 }
 
-void patientSearch(fileData) {
+void patientSearch() {
     char queryId[8];
     int isFound = 0;
     printf("-=-=-=-=-=-=- Patient Search -=-=-=-=-=-=-\n");
@@ -122,24 +174,33 @@ void patientSearch(fileData) {
         printf("Patient Id %s not found.\n", queryId);
     }
 
-    pressAnyKeyToContinute();
+    return pressAnyKeyToContinute();
 }
 
-void patientList(fileData) {
+void patientList() {
+    int recordCount = 0;
+
     printf("-=-=-=-=-=-=- Patient List -=-=-=-=-=-=-\n");
 
     rewind(fileData);
     while (fread(&PatientData, recordSize, 1, fileData) == 1) {
+        recordCount++;
         printf("Id: %s\n", PatientData.Id);
         printf("FirstName: %s\n", PatientData.FirstName);
         printf("LastName: %s\n", PatientData.LastName);
         printf("\n");
     }
 
-    pressAnyKeyToContinute();
+    if(recordCount == 0) {
+        printf("No Patient Found.\n");
+    } else {
+        printf("\nTotal Patient: %d\n", recordCount);
+    }
+
+    return pressAnyKeyToContinute();
 }
 
-void patientModify(fileData) {
+void patientModify() {
     char queryId[8], fieldId;
     int isFound = 0;
     printf("-=-=-=-=-=-=- Patient Modify -=-=-=-=-=-=-\n");
@@ -157,8 +218,7 @@ void patientModify(fileData) {
 
     if(!isFound) {
         printf("Patient Id %s not found.\n", queryId);
-        pressAnyKeyToContinute();
-        return 0;
+        return pressAnyKeyToContinute();
     }
 
 
@@ -175,7 +235,7 @@ void patientModify(fileData) {
 
         fieldId = getch();
 
-        printf("\n\n");
+        printf("%c\n\n", fieldId);
 
         if(fieldId == '0') {
             fseek(fileData, -recordSize, SEEK_CUR);
@@ -195,5 +255,5 @@ void patientModify(fileData) {
         printf("\n\n");
     }
 
-    return 0;
+    return pressAnyKeyToContinute();
 }
