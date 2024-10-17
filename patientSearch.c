@@ -4,40 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-// Import Function
-#include "patientRegitration.c"
-
 #define FileName "PatientData"
-
-struct PatientDataStruct {
-    char Id[8], FirstName[30], LastName[30], fileName[30];
-};
-
-// Global Function
-
-void patientSearch();
-void patientList();
-void patientModify();
-
-// General Function
-void clear() {
-    //system("clear"); // Clear cmd for unix
-    system("cls"); // Clear cmd for window
-    //printf("\n\n\n\n\n\n\n\n\n\n");
-    return;
-}
-
-void pressAnyKeyToContinute() {
-    printf("\nPress any key to continue...");
-    getch();
-
-    return;
-}
 
 // Global Variable
 struct PatientDataStruct PatientData;
-int recordSize = 0;
 FILE *fileData;
 
 void patientSearch() {
@@ -64,5 +34,5 @@ void patientSearch() {
         printf("Patient Id %s not found.\n", queryId);
     }
 
-    return pressAnyKeyToContinute();
+    return pressAnyKeyToContinue();
 }

@@ -7,32 +7,10 @@
 // Variable for Filename
 #define FileName "PatientData"
 
-// Declare for Function
-struct PatientDataStruct {
-    char Id[8], FirstName[30], LastName[30], fileName[30];
-};
-
 // Global Variable
 struct PatientDataStruct PatientData;
-int recordSize = 0;
 FILE *fileData;
 
-// General Function
-void pressAnyKeyToContinute() {
-    printf("\nPress any key to continue...");
-    getch();
-
-    return;
-}
-
-void clear() {
-    //system("clear"); // Clear cmd for unix
-    system("cls"); // Clear cmd for window
-    //printf("\n\n\n\n\n\n\n\n\n\n");
-    return;
-}
-
-// Actual Function
 void patientRegitration() {
     struct PatientDataStruct NewPatientData;
     char action;
@@ -67,13 +45,13 @@ void patientRegitration() {
 
             if(action == '0') {
                 printf("\n\nNoting change.");
-                return pressAnyKeyToContinute();
+                return pressAnyKeyToContinue();
             } else if(action == '1') {
                 fseek(fileData, -recordSize, SEEK_CUR);
                 fwrite(&NewPatientData, recordSize, 1, fileData);
 
                 printf("\n\nReplace Patient Data Success.");
-                return pressAnyKeyToContinute();
+                return pressAnyKeyToContinue();
             } else if(action == '2') {
                 printf("Enter NEW patient's ID: ");
                 scanf("%s", &NewPatientData.Id);
@@ -93,5 +71,5 @@ void patientRegitration() {
     fwrite(&NewPatientData, recordSize, 1, fileData);
 
     printf("\n\nSave Patient Data Success.");
-    return pressAnyKeyToContinute();
+    return pressAnyKeyToContinue();
 }

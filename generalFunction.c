@@ -1,5 +1,4 @@
 // Import Library
-
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
@@ -12,9 +11,9 @@ void clear() {
     return;
 }
 
-int pressAnyKeyToContinue() {
+void pressAnyKeyToContinue() {
     printf("\nPress any key to continue...");
     getch();
 
-    return 0;
+    return;
 }
