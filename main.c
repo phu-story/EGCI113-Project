@@ -6,7 +6,10 @@
 
 
 // Import Function
+#include "patientList.c"
+#include "patientModify.c"
 #include "patientRegitration.c"
+#include "patientSearch.c"
 
 #define FileName "PatientData"
 
