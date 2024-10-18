@@ -28,7 +28,16 @@ void patientModify() {
 
     if(!isFound) {
         printf("Patient Id %s not found.\n", queryId);
-        return pressAnyKeyToContinue();
+        printf("Press 1 to retry or 2 to return to main menu\n");
+        char retryQ = getch();
+        // printf("retryQ -> %c", retryQ);
+
+        if (retryQ == '1'){
+            clear();
+            return patientModify();
+        } else if (retryQ == '2') {
+            return pressAnyKeyToContinue();
+        }
     }
 
 

@@ -14,12 +14,12 @@
 #define FileName "PatientData"
 
 // General Function
-void pressAnyKeyToContinute() {
-    printf("\nPress any key to continue...");
-    getch();
+// void pressAnyKeyToContinute() {
+//     printf("\nPress any key to continue...");
+//     getch();
 
-    return;
-}
+//     return;
+// }
 
 // Global Variable
 struct PatientDataStruct PatientData;
@@ -69,7 +69,7 @@ int main() {
             patientModify(fileData);
         } else {
             printf("\nWrong Command.");
-            pressAnyKeyToContinute();
+            pressAnyKeyToContinue();
         }
     }
 

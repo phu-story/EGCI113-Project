@@ -6,7 +6,7 @@
 
 #define FileName "PatientData"
 
-#include "generalFunction.c"
+#include "generalFunction.c"    // <- idk why it only need to include here but if include in other file will cause error maybe move to main.c someday
 
 struct PatientDataStruct {
     char Id[8], FirstName[30], LastName[30], fileName[30];
