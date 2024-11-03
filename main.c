@@ -1,81 +1,45 @@
 // Import Library
 #include <stdio.h>
-#include <conio.h>
 #include <stdlib.h>
-#include <string.h>
-
+#include <conio.h>
+#include <direct.h>
+#include <io.h>
 
 // Import Function
-#include "patientList.c"
-#include "patientModify.c"
-#include "patientRegitration.c"
-#include "patientSearch.c"
+#include "generalFunction.c"
+#include "login.c"
 
-#define FileName "PatientData"
-
-// General Function
-// void pressAnyKeyToContinute() {
-//     printf("\nPress any key to continue...");
-//     getch();
-
-//     return;
-// }
-
-// Global Variable
-struct PatientDataStruct PatientData;
-FILE *fileData;
+#define FolderName "PatientFolder"
 
 int main() {
-    printf("Loading...");
+    printf("Status: Initiating\n");
 
     char menu = 0;
 
-    // Check File
-    fileData = fopen(FileName, "rb+");
-    if(fileData == NULL) {
-        fileData = fopen(FileName, "wb+");
-        if(fileData == NULL) {
-            printf("Can't open file.");
+    if(_access(FolderName, 0) == -1){
+        if(_mkdir(FolderName) == 0 ) {
+            char password[256];
+            printf("Set-Up admin password: ");
+            scanf("%255s", password);
+            printf("Initiation: Folder created\n");
+            char adminFolder[256];
+            snprintf(adminFolder, 256, "PatientFolder/admin_%s", password);
+            _mkdir(adminFolder);
+        } else {
+            printf("Error: File not created\n");
             return 0;
         }
+    } else {
+        printf("Initiation: Folder existed\n");
     }
 
-    // Set Struct Size
-    recordSize = sizeof(PatientData);
+    printf("Status: Ready\n");
 
-    while (1) {
-        clear();
+    clear();
 
-        printf("Exit: 0\n");
-        printf("Patient Regitration: 1\n");
-        printf("Patient Search: 2\n");
-        printf("Patient List: 3\n");
-        printf("Patient Modify: 4\n");
-        printf("What do you want to do?: ");
+    login();
 
-        menu = getch();
-
-        clear();
-
-        if(menu == '0') {
-            break;
-        } else if(menu == '1') {
-            patientRegitration(fileData);
-        } else if(menu == '2') {
-            patientSearch(fileData);
-        } else if(menu == '3') {
-            patientList(fileData);
-        } else if(menu == '4') {
-            patientModify(fileData);
-        } else {
-            printf("\nWrong Command.");
-            pressAnyKeyToContinue();
-        }
-    }
-
-    fclose(fileData);
-
-    printf("Program End.");
+    printf("Program End");
 
     return 0;
 }

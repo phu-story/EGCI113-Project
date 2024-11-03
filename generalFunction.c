@@ -1,8 +1,6 @@
 // Import Library
 #include <stdio.h>
-#include <conio.h>
 #include <stdlib.h>
-#include <string.h>
 
 void clear() {
     //system("clear"); // Clear cmd for unix
