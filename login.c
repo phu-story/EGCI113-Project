@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <io.h>
 
-#include "authentication.c"
-
 void login() {
     struct PatientDataStruct{
         char FirstName[30], LastName[30], id[6];
