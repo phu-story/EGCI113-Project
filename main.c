@@ -29,8 +29,10 @@ int main() {
             printf("Error: File not created\n");
             return 0;
         }
-    } else {
+    } else if(_access(FolderName, 0) == 0){
         printf("Initiation: Folder existed\n");
+    } else{
+        printf("Error: Bad reading");
     }
 
     printf("Status: Ready\n");
@@ -38,6 +40,8 @@ int main() {
     clear();
 
     login();
+    
+    getch();
 
     printf("Program End");
 
