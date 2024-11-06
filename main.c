@@ -8,6 +8,7 @@
 // Import Function
 #include "generalFunction.c"
 #include "login.c"
+#include "adminMenu.c"
 
 #define FolderName "PatientFolder"
 
@@ -39,7 +40,8 @@ int main() {
 
     clear();
 
-    login();
+    // login();
+    adminMenu();
     
     getch();
 
