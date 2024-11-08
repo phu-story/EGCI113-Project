@@ -22,7 +22,7 @@ void adminMenu() {
         printf("What do you want to do?: ");
 
         option = getchar();
-        if(option = '1') {
+        if(option == '1') {
             printf("Enter patient ID: ");
             scanf("%d", PatientInfo.id);
 

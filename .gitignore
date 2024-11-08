@@ -5,3 +5,4 @@ main.o
 PatientData
 .exe
 main
+main.dSYM

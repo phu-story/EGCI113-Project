@@ -23,9 +23,9 @@ int main() {
         printf("Initiation: Folder not found\n");
 
         if(mkdir(FolderName, 0777) == 0) {
-            char password[30];
+            char* password;
             printf("Set-Up admin password: ");
-            scanf("%255s", password);
+            scanf("%c", password);
             printf("Initiation: Folder created\n");
             char adminFolder[256];
             snprintf(adminFolder, 256, "PatientFolder/%s_admin", password);
