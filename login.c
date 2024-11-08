@@ -2,6 +2,8 @@
 #include <dirent.h>
 #include <string.h>
 
+void adminMenu();
+
 void login() {
     struct PatientDataStruct{
         char FirstName[30], LastName[30], id[6];
@@ -36,7 +38,7 @@ void login() {
                             printf("Enter the password: ");
                             scanf("%s", password);
                             if (strcmp(password, "admin") == 0) {
-                                printf("You're admin\n");
+                                adminMenu();
                             }
                             break;
                         } else {
