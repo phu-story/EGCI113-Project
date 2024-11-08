@@ -1,12 +1,12 @@
 // Import Library
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
-#include <direct.h>
-#include <io.h>
+
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 // Import Function
-#include "generalFunction.c"
 #include "login.c"
 #include "adminMenu.c"
 
@@ -17,33 +17,33 @@ int main() {
 
     char menu = 0;
 
-    if(_access(FolderName, 0) == -1){
-        if(_mkdir(FolderName) == 0 ) {
-            char password[256];
+    if(access(FolderName, 0) == 0 ){
+        printf("Initiation: Folder existed\n");
+    } else if(access(FolderName, 0) == -1) {
+        printf("Initiation: Folder not found\n");
+
+        if(mkdir(FolderName, 0777) == 0) {
+            char password[30];
             printf("Set-Up admin password: ");
             scanf("%255s", password);
             printf("Initiation: Folder created\n");
             char adminFolder[256];
-            snprintf(adminFolder, 256, "PatientFolder/admin_%s", password);
-            _mkdir(adminFolder);
+            snprintf(adminFolder, 256, "PatientFolder/%s_admin", password);
+            mkdir(adminFolder, 0777);
         } else {
             printf("Error: File not created\n");
             return 0;
         }
-    } else if(_access(FolderName, 0) == 0){
-        printf("Initiation: Folder existed\n");
-    } else{
-        printf("Error: Bad reading");
     }
 
     printf("Status: Ready\n");
 
-    clear();
+    system("clear");
 
     // login();
     adminMenu();
     
-    getch();
+    getchar();
 
     printf("Program End");
 

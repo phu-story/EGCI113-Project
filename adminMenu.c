@@ -1,16 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
 
 void adminMenu() {
     struct PatientDataStruct{
-        char id[6], FirstName[30], LastName[30];
+        char FirstName[30], LastName[30];
+        int id[6];
     };
 
     struct PatientDataStruct PatientInfo;
 
     while(1) {
-        system("cls");
+        system("clear");
 
         char option;
 
@@ -21,7 +21,7 @@ void adminMenu() {
         printf("3) Making patient appointment: \n");
         printf("What do you want to do?: ");
 
-        option = getch();
+        option = getchar();
         if(option = '1') {
             printf("Enter patient ID: ");
             scanf("%d", PatientInfo.id);
