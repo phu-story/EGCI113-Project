@@ -3,6 +3,7 @@
 #include <string.h>
 
 void adminMenu();
+void patientView();
 
 void login() {
     struct PatientDataStruct{
@@ -42,7 +43,7 @@ void login() {
                             }
                             break;
                         } else {
-                            printf("Login successful\n");
+                            patientView(PatientData.id);
                             break;
                         }
                     }
