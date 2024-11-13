@@ -64,8 +64,8 @@ void login() {
 
                     if (simplifyName != NULL && strcmp(simplifyName, PatientData.FirstName) == 0) {
 
-                        printf("Login successful\n");
-                        break;
+                        // To-do <-----------------------------
+                        
                     }
                 }
             }

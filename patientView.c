@@ -31,9 +31,32 @@ void patientView(char id[6]) {
     FILE *file = fopen(openingFile, "r");
     char buffer[128];
 
+    char readingID[30], readingFirstName[30], readingLastName[30];
+
+    // rewind(file);
+
     while (fgets(buffer, 128, file)) {
-        printf("%s", buffer);
+        buffer[strcspn(buffer, "\n")] = 0; // Remove newline character
+
+        char* token = strtok(buffer, " ");
+
+        if(strcmp(token, "PatientID:") == 0) {
+            token = strtok(NULL, " ");
+            strcpy(readingID, token);
+        }
+        if (strcmp(token, "PatientName:") == 0) {
+            token = strtok(NULL, " ");
+            strcpy(readingFirstName, token);
+        }
+        if (strcmp(token, "PatientLastName:") == 0) {
+            token = strtok(NULL, " ");
+            strcpy(readingLastName, token);
+        }
+        
     }
+
+    printf("ID: %s\n", readingID);
+    printf("Name: %s %s\n", readingFirstName, readingLastName);
 
     fclose(file);
     

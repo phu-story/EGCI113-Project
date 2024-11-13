@@ -11,6 +11,7 @@
 #include "adminMenu.c"
 #include "patientRegistration.c"
 #include "patientView.c"
+#include "patientModification.c"
 
 #define FolderName "PatientFolder"
 
@@ -42,9 +43,10 @@ int main() {
 
     system("clear");
 
-    login();
+    // login();
     // adminMenu();
     // patientView("111111");
+    patientModification();
     
     getchar();
 

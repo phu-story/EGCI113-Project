@@ -4,6 +4,7 @@
 
 // Function prototype declaration
 void patientRegistraion();
+void patientModification();
 
 void adminMenu() {
     struct PatientDataStruct{
@@ -17,13 +18,20 @@ void adminMenu() {
     while(1) {
         system("clear");
 
-        char option;
-
         printf("Welcome, admin\n");
         
+        char option;
+        
+        printf("Patient Management Section\n");
         printf("1) Patient Regitration: \n");
         printf("2) Patient records update: \n");
         printf("3) Making patient appointment: \n");
+
+        printf("-----------------------------\n");
+
+        printf("Doctor Management Section\n");
+        printf("4) Doctor Registration: \n");
+        printf("5) Moidify appointment: \n");
 
         printf("Press '0' to quit\n");
         printf("What do you want to do?: ");
@@ -31,9 +39,12 @@ void adminMenu() {
         option = getchar();
         
         if (option == '0') {
-            return;
+            system("clear");
+            login();
         } else if(option == '1') {
             patientRegistraion();
+        } else if(option == '2') {
+            patientModification();
         }
     }
 }
