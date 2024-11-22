@@ -27,7 +27,7 @@ int main(int argc, const char * argv[]) {
     do{
         struct Appointment a;
         printf("Enter your name (Firstname Surename): ");
-        scanf("%[^\n]", a.name); //to be able to read full name with space
+        scanf("%49[^\n]", a.name); //to be able to read full name with space
         printf("Enter date you want to make appointment (DD MM YYYY): ");
         scanf("%d %d %d", &a.date, &a.month, &a.year);
         printf("Available time on %02d/%02d/%02d:\n", a.date, a.month, a.year);
@@ -87,7 +87,7 @@ void AppointmentSaved(void) {
     }
     fprintf(fp, "Date,Month,Year,Hour\n"); 
     for (int i = 0; i < booking_amount; i++) {
-        fprintf(fp, "%s %d,%d,%d,%d\n",
+        fprintf(fp, "%s,%d,%d,%d,%d\n",
                 booking[i].name,
                 booking[i].date,
                 booking[i].month,
