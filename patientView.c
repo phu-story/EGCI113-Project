@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <string.h>
+#include <time.h>
+
+char* asctimeFormat(char*);
 
 struct PatientDataStruct{
     char FirstName[30], LastName[30], id[6];
@@ -31,7 +34,7 @@ void patientView(char id[6]) {
     FILE *file = fopen(openingFile, "r");
     char buffer[128];
 
-    char readingID[30], readingFirstName[30], readingLastName[30];
+    char readingID[30], readingFirstName[30], readingLastName[30], readingAppointment[30];
 
     // rewind(file);
 
@@ -52,11 +55,16 @@ void patientView(char id[6]) {
             token = strtok(NULL, " ");
             strcpy(readingLastName, token);
         }
+        if (strcmp(token, "OpenAppointment:") == 0) {
+            token = strtok(NULL, " ");
+            strcpy(readingAppointment, token);
+        }
         
     }
 
     printf("ID: %s\n", readingID);
     printf("Name: %s %s\n", readingFirstName, readingLastName);
+    printf("Appointment: %s\n", asctimeFormat(readingAppointment));
 
     fclose(file);
     

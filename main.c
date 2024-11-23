@@ -9,9 +9,13 @@
 // Import Function
 #include "login.c"
 #include "adminMenu.c"
+#include "doctorRegistration.c"
 #include "patientRegistration.c"
 #include "patientView.c"
 #include "patientModification.c"
+#include "dirSeek.c"
+#include "appointment.c"
+#include "asctimeFormat.c"
 
 #define FolderName "PatientFolder"
 
@@ -37,6 +41,18 @@ int main() {
             printf("Error: File not created\n");
             return 0;
         }
+        
+    }
+
+    if(access("DoctorFolder", 0) == 0 ){
+        printf("Initiation: Folder existed\n");
+    } else if(access("DoctorFolder", 0) == -1) {
+        printf("Initiation: Folder not found\n");
+        if (mkdir("DoctorFolder", 0777) == 0) {
+            char doctorInitialFolder[126];
+            snprintf(doctorInitialFolder, 126, "DoctorFolder/0_DEMO");
+            mkdir(doctorInitialFolder, 0777);
+        }
     }
 
     printf("Status: Ready\n");
@@ -46,7 +62,11 @@ int main() {
     // login();
     // adminMenu();
     // patientView("111111");
-    patientModification();
+    // patientModification();
+    makeAppointment();
+    // printf("%s", dirSeek("111111"));
+
+    // remove("PatientFolder/111111_bro/Sun May 12 10:00:00 2006_Appointment.txt");
     
     getchar();
 
