@@ -136,8 +136,8 @@ void makeAppointment() {
 
         if (time_choice >= 1 && time_choice <= available_time) {
             a.hour = timetable[time_choice - 1][0];
-            // AddAppointment(a);
-            // AppointmentSaved();
+            AddAppointment(a);
+            AppointmentSaved();
             printf("Appointment confirmed for %02d/%02d/%02d at %02d:00 - %02d:00\n",
                    a.date, a.month, a.year, timetable[time_choice - 1][0], timetable[time_choice - 1][1]);
             printf("Thank you, %s\n", a.name);
@@ -154,11 +154,11 @@ void makeAppointment() {
             while ((entry = readdir(dir)) != NULL) {
                 char* simplifyID = strtok(entry->d_name, "_");
                 if(strcmp(simplifyID, "0") != 0 && strcmp(simplifyID, ".") != 0 && strcmp(simplifyID, "..") != 0) {    
-                printf("%s) ", simplifyID);
-                simplifyID = strtok(NULL, "_");
-                if (simplifyID != NULL) {
-                    printf("%s\n", simplifyID);
-                }
+                    printf("%s) ", simplifyID);
+                    simplifyID = strtok(NULL, "_");
+                    if (simplifyID != NULL) {
+                        printf("%s\n", simplifyID);
+                    }
                 }
             }
         }

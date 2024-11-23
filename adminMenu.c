@@ -7,6 +7,8 @@ void patientRegistraion();
 void patientModification();
 void makeAppointment();
 void doctorRegistration();
+void appointmentNote();
+void login();
 
 void adminMenu() {
     struct PatientDataStruct{
@@ -39,6 +41,7 @@ void adminMenu() {
         printf("What do you want to do?: ");
 
         option = getchar();
+        while (getchar() != '\n'); // Clear the input buffer
         
         if (option == '0') {
             system("clear");
@@ -52,8 +55,7 @@ void adminMenu() {
         } else if (option == '4') {
             doctorRegistration();
         } else if (option == '5') {
-            system("clear");
-            printf("Appointment note\n");
+            appointmentNote();
         } else {
             system("clear");
             printf("Invalid input\n");

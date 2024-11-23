@@ -12,7 +12,8 @@ void login() {
     
     struct PatientDataStruct PatientData;
     while (1) {
-        char option = 0;
+        char option;
+        retry:
 
         printf("Select login option\n");
         printf("1) 6-digit ID \n");
@@ -69,8 +70,17 @@ void login() {
                     }
                 }
             }
+        } else if (option == '0') {
+            printf("Are you sure you want to quit? (y/n): ");
+            char quit = getchar();
+            if (quit == 'y' || quit == 'Y') {
+                return;
+            } else {
+                goto retry;
+            }
         } else {
-            return;
+            printf("Invalid input\n");
+            goto retry;
         }
         break;
     }

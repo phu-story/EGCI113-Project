@@ -15,6 +15,7 @@
 #include "patientModification.c"
 #include "dirSeek.c"
 #include "appointment.c"
+#include "appointmentNote.c"
 #include "asctimeFormat.c"
 
 #define FolderName "PatientFolder"
@@ -59,12 +60,13 @@ int main() {
 
     system("clear");
 
-    // login();
+    login();
     // adminMenu();
     // patientView("111111");
     // patientModification();
-    makeAppointment();
+    // makeAppointment();
     // printf("%s", dirSeek("111111"));
+    // appointmentNote();
 
     // remove("PatientFolder/111111_bro/Sun May 12 10:00:00 2006_Appointment.txt");
     
