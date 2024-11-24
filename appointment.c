@@ -353,7 +353,7 @@ void AppointmentSaved() {
         time(&rawtime);
         timeinfo = localtime(&rawtime);
         fprintf(fp, "Appoint by Dr.%s\nIssue on %s\nAppoint on %s", 
-                a.doctorName, asctime(timeinfo), appointTime);
+                a.doctorName, asctime(timeinfo), ascAppointTime);
         fclose(fp);
     } else {
         perror("Failed to create appointment file");

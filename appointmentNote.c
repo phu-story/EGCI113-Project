@@ -116,6 +116,13 @@ void appointmentNote() {
     int noteNumber;
     scanf("%d", &noteNumber);
 
+    if (noteNumber < 1 || noteNumber >= count) {
+        system("clear");
+        printf("Invalid note number\n");
+        goto retry;
+    }
+    
+
     char openFile[100];
     sprintf(openFile, "PatientFolder/%s_%s/%s %s %s %s %s_Appointment.txt", PatientInfo.id, PatientInfo.FirstName, noting[noteNumber][0], noting[noteNumber][1], noting[noteNumber][2], noting[noteNumber][3], noting[noteNumber][4]);
     FILE *fp = fopen(openFile, "a");
