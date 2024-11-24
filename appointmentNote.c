@@ -63,12 +63,14 @@ void appointmentNote() {
     }
 
     int count = 1;
+    int noteFound = 0;
     while ((entry = readdir(dir)) != NULL) {
         if (strcmp(entry->d_name, "record.txt") != 0 && 
             strcmp(entry->d_name, ".") != 0 && 
             strcmp(entry->d_name, "..") != 0 
             )
         {
+            noteFound = 1;
             dateTime.day = strtok(entry->d_name, " ");
             dateTime.month = strtok(NULL, " ");
             dateTime.date = strtok(NULL, " ");
@@ -104,6 +106,12 @@ void appointmentNote() {
         
     }
     closedir(dir);
+
+    if (noteFound == 0) {
+        system("clear");
+        printf("No appointment found\n");
+        goto retry;
+    }
     printf("Enter the note number: ");
     int noteNumber;
     scanf("%d", &noteNumber);

@@ -117,6 +117,14 @@ void patientModification() {
             } else if (selectingField == 3) {
                 printf("Enter new Date of Birth: ");
                 scanf("%s %s %s", newDate, newMonth, newYear);
+
+                if (atoi(newDate) > 31 || atoi(newMonth) > 12) {
+                    system("clear");
+                    printf("Invalid date\n");
+                    goto retry;
+                }
+                
+
                 modifiedFile(PatientData.id, PatientData.FirstName, PatientData.LastName, newDate, newMonth, newYear);
             } else if (selectingField == 4) {
                 printf("Enter new first name: ");
@@ -125,6 +133,13 @@ void patientModification() {
                 scanf("%s", newLastName);
                 printf("Enter new Date of Birth: ");
                 scanf("%s %s %s", newDate, newMonth, newYear);
+
+                if (atoi(newDate) > 31 || atoi(newMonth) > 12) {
+                    system("clear");
+                    printf("Invalid date\n");
+                    goto retry;
+                }
+
                 modifiedFile(PatientData.id, newFirstName, newLastName, newDate, newMonth, newYear);
                 system("clear");
                 printf("Patient data modified\n");

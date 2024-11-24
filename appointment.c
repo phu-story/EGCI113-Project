@@ -103,6 +103,12 @@ void makeAppointment() {
         printf("Enter date you want to make an appointment (DD MM YYYY): ");
         scanf("%d %d %d", &a.date, &a.month, &a.year);
 
+        if (a.date < 1 || a.date > 31 || a.month < 1 || a.month > 12) {
+            system("clear");
+            printf("Invalid date\n");
+            goto retry;
+        }
+        
         // Check if the date is in the past
         struct tm inputDate = {0};
         inputDate.tm_mday = a.date;
@@ -338,7 +344,10 @@ void AppointmentSaved() {
     }
 
     // Create a new appointment file
-    snprintf(makingFile, sizeof(makingFile), "%s/%s_Appointment.txt", reserveDir, appointTime);
+    char ascAppointTime[30];
+    snprintf(ascAppointTime, 30, "%d/%d/%d/%d", a.date, a.month, a.year, a.hour);
+    strcpy(ascAppointTime, asctimeFormat(ascAppointTime));
+    snprintf(makingFile, sizeof(makingFile), "%s/%s_Appointment.txt", reserveDir, ascAppointTime);
     fp = fopen(makingFile, "w");
     if (fp) {
         time(&rawtime);
