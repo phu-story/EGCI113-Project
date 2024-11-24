@@ -41,7 +41,6 @@ void adminMenu() {
         printf("What do you want to do?: ");
 
         option = getchar();
-        while (getchar() != '\n'); // Clear the input buffer
         
         if (option == '0') {
             system("clear");

@@ -60,11 +60,11 @@ int main() {
 
     system("clear");
 
-    // login();
+    login();
     // adminMenu();
     // patientView("333333");
     // patientModification();
-    makeAppointment();
+    // makeAppointment();
     // printf("%s", dirSeek("111111"));
     // appointmentNote();
 

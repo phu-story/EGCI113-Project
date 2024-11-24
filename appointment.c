@@ -89,6 +89,13 @@ void makeAppointment() {
 
         nameSimplified = strtok(NULL, "_");
         nameSimplified = strtok(nameSimplified, "/");
+
+        if(strcmp(nameSimplified, "admin") == 0) {
+            system("clear");
+            printf("CANNOT ADPPOINT ADMIN\n");
+            goto retry;
+        }
+
         strcpy(a.name, nameSimplified);
         printf("Patient's name, %s\n", a.name);
 

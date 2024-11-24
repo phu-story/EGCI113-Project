@@ -9,7 +9,7 @@ void modifiedFile(char*, char*, char*, char*, char*, char*);
 
 
 void patientModification() {
-
+    system("clear");
     struct PatientDataStruct{
             char FirstName[30], LastName[30];
             char DobDay[3], DobMonth[3], DobYear[5];
@@ -29,7 +29,7 @@ void patientModification() {
         printf("Enter 6-digit id(Press '0' to exit): ");
         scanf("%s", PatientData.id);
         printf("ID: %s\n", PatientData.id);
-        if (PatientData.id == "0") {
+        if (strcmp(PatientData.id, "0") == 0) {
             adminMenu();
         }
         
@@ -64,6 +64,11 @@ void patientModification() {
                     token = strtok(NULL, " ");
                     if (token != NULL) {
                         strcpy(PatientData.FirstName, token);
+                        if(strcmp(PatientData.FirstName, "admin") == 0) {
+                            system("clear");
+                            printf("CANNOT ADPPOINT ADMIN\n");
+                            goto retry;
+                        }
                     }
                 }
                 if (strcmp(token, "PatientLastName:") == 0) {

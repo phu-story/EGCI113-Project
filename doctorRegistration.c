@@ -3,7 +3,6 @@
 #include <dirent.h>
 
 void doctorRegistration() {
-    system("clear");
 
     struct DoctorDataStruct{
         char FirstName[30], LastName[30];
@@ -13,12 +12,13 @@ void doctorRegistration() {
     struct DoctorDataStruct DoctorData;
     struct dirent *entry;
 
+    system("clear");
     retry:
 
     printf("Enter doctor's name(Enter 0 to exit): ");
     scanf("%s", DoctorData.FirstName);
 
-    if (strcmp(DoctorData.id, "0") == 0) {
+    if (strcmp(DoctorData.FirstName, "0") == 0) {
         adminMenu();
     }
 

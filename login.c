@@ -76,18 +76,23 @@ void login() {
         //         }
         //     }
         } else if (option == '0') {
-            printf("Are you sure you want to quit? (y/n): ");
-            char quit = getchar();
+            printf("\nAre you sure you want to quit? (y/n): ");
+            char quit;
+            scanf(" %c", &quit);
             if (quit == 'y' || quit == 'Y') {
                 return;
             } else {
+                system("clear");
                 goto retry;
             }
         } else {
+            system("clear");
             printf("Invalid input\n");
             goto retry;
         }
-        break;
+        system("clear");
+        printf("No ID found\n");
+        goto retry;
     }
     return;
 }

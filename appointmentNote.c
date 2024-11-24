@@ -26,6 +26,7 @@ void appointmentNote() {
     struct dateTimeStruct dateTime;
     struct dirent *entry;
 
+    system("clear");
     retry:
 
     printf("Enter patient ID(Enter 0 to exit): ");
@@ -39,6 +40,11 @@ void appointmentNote() {
                 if (simplifyName != NULL && strcmp(simplifyName, PatientInfo.id) == 0) {
                     simplifyName = strtok(NULL, "_");
                     strcpy(PatientInfo.FirstName, simplifyName);
+                    if(strcmp(simplifyName, "admin") == 0) {
+                        system("clear");
+                        printf("CANNOT ADPPOINT ADMIN\n");
+                        goto retry;
+                    }
                     printf("Patient Name: %s\n", PatientInfo.FirstName);
                 }
             }

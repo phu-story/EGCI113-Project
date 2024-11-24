@@ -14,6 +14,7 @@ struct PatientDataStruct PatientData;
 void patientView(char id[6]) {
     struct dirent *entry;
     DIR *dir = opendir("PatientFolder");
+    retry:
     if (dir != NULL) {
         while ((entry = readdir(dir)) != NULL) {
             char* simplifyID = strtok(entry->d_name, "_");
@@ -21,7 +22,11 @@ void patientView(char id[6]) {
             if (simplifyID != NULL && strcmp(simplifyID, id) == 0) {
                 simplifyID = strtok(NULL, "_");
                 strcpy(PatientData.FirstName, simplifyID);
-                
+                if(strcmp(simplifyID, "admin") == 0) {
+                    system("clear");
+                    printf("CANNOT VIEW ADMIN\n");
+                    goto retry;
+                }
             }
         }
     }
