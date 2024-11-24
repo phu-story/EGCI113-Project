@@ -220,42 +220,56 @@ void BookingSystem(){
 }
 
 void AppointmentSaved() {
-    strcpy(openingFile, reserveDir);
-    sprintf(openingFile, "%s/record.txt", openingFile);
-    
+    if (!reserveDir || !openingFile) {
+        printf("Error: Missing required file paths.\n");
+        return;
+    }
+
+    // Construct file path for the record
+    snprintf(openingFile, 256, "%s/record.txt", reserveDir);
+
     FILE *fp = fopen(openingFile, "r");
+    if (!fp) {
+        perror("Failed to open record file");
+        return;
+    }
 
     char makingFile[256];
-    strcpy(makingFile, reserveDir);
+    snprintf(makingFile, 256, "%s", reserveDir);
     char appointTime[20];
-    sprintf(appointTime, "%d/%d/%d/%d_Appoint", a.date, a.month, a.year, a.hour);
-    
-    char buffer[128], readingAppointment[20];
-    while (fgets(buffer, 128, fp)) {
-        buffer[strcspn(buffer, "\n")] = 0; // Remove newline character
+    snprintf(appointTime, 20, "%d/%d/%d/%d", a.date, a.month, a.year, a.hour);
 
-        char* token = strtok(buffer, "w");
-        if (strcmp(token, "OpenAppointment:") == 0) {
-            token = strtok(NULL, " ");
-            strcpy(readingAppointment, token);
+    char buffer[128];
+    char readingAppointment[128] = "NoAppointment";
+
+    // Read the record file
+    while (fgets(buffer, sizeof(buffer), fp)) {
+        buffer[strcspn(buffer, "\n")] = '\0'; // Remove newline character
+
+        char *token = strtok(buffer, ": ");
+        if (token && strcmp(token, "OpenAppointment") == 0) {
+            token = strtok(NULL, ": ");
+            if (token) {
+                strncpy(readingAppointment, token, sizeof(readingAppointment) - 1);
+                readingAppointment[sizeof(readingAppointment) - 1] = '\0';
+            }
         }
     }
-    if (readingAppointment != NULL) {
-        char* token = strtok(buffer, "/");
-        char readingDate[3], readingMonth[3], readingYear[5], readingHour[3];
-        strcpy(readingDate, token);
-        token = strtok(NULL, "/");
-        strcpy(readingMonth, token);
-        token = strtok(NULL, "/");
-        strcpy(readingYear, token);
-        token = strtok(NULL, "/");
-        strcpy(readingHour, token);
+    fclose(fp);
+
+    // Process the appointment if it exists
+    if (strcmp(readingAppointment, "NoAppointment") != 0) {
+        int refDateValid = 0; // Flag to check date comparison
 
         struct tm refDate = {0};
-        refDate.tm_mday = atoi(readingDate);
-        refDate.tm_mon = atoi(readingMonth - 1);
-        refDate.tm_year = atoi(readingYear - 1900);
-        refDate.tm_hour = atoi(readingHour);
+        char *token = strtok(readingAppointment, "/");
+        if (token) refDate.tm_mday = atoi(token);
+        token = strtok(NULL, "/");
+        if (token) refDate.tm_mon = atoi(token) - 1;
+        token = strtok(NULL, "/");
+        if (token) refDate.tm_year = atoi(token) - 1900;
+        token = strtok(NULL, "/");
+        if (token) refDate.tm_hour = atoi(token);
 
         struct tm inputDate = {0};
         inputDate.tm_mday = a.date;
@@ -263,68 +277,73 @@ void AppointmentSaved() {
         inputDate.tm_year = a.year - 1900;
         inputDate.tm_hour = a.hour;
 
-        if (difftime(time(NULL), mktime(&refDate)) < difftime(time(NULL), mktime(&inputDate)) || difftime(time(NULL), mktime(&refDate)) < 0) {
-            char* moddingFile = dirSeek(a.id);
-            FILE *file = fopen(moddingFile, "w");
-            if (file != NULL) {
-                // Read existing content of the file
-                char buffer[1024];
-                FILE *tempFile = fopen("temp.txt", "w");
-                if (tempFile == NULL) {
-                    printf("Error: Cannot open temporary file\n");
-                } else {
-                    FILE *originalFile = fopen(moddingFile, "r");
-                    if (originalFile != NULL) {
-                        int found = 0;
-                        while (fgets(buffer, sizeof(buffer), originalFile)) {
-                            if (strncmp(buffer, "OpenAppointment:", 15) == 0) {
-                                fprintf(tempFile, "OpenAppointment: %s\n", appointTime);
-                                found = 1;
-                            } else {
-                                fputs(buffer, tempFile);
-                            }
-                        }
-                        if (!found) {
-                            fprintf(tempFile, "OpenAppointment: %s\n", appointTime);
-                        }
-                        fclose(originalFile);
-                    } else {
-                        fprintf(tempFile, "OpenAppointment: %s\n", appointTime);
-                    }
-                    fclose(tempFile);
+        // Compare the reference date with the new appointment
+        if (difftime(mktime(&refDate), mktime(&inputDate)) < 0) {
+            refDateValid = 1;
+        }
 
-                    // Replace original file with temp file
-                    remove(moddingFile);
-                    rename("temp.txt", moddingFile);
-                }
-                fclose(file);
-            } else {
-                printf("Error: File not created\n");
+        // Update the record if the new appointment is valid
+        if (refDateValid) {
+            FILE *tempFile = fopen("temp.txt", "w");
+            if (!tempFile) {
+                perror("Failed to create temporary file");
+                return;
             }
+
+            fp = fopen(openingFile, "r");
+            if (!fp) {
+                perror("Failed to reopen record file");
+                fclose(tempFile);
+                return;
+            }
+
+            while (fgets(buffer, sizeof(buffer), fp)) {
+                if (strncmp(buffer, "OpenAppointment:", 15) == 0) {
+                    fprintf(tempFile, "OpenAppointment: %s\n", appointTime);
+                } else {
+                    fputs(buffer, tempFile);
+                }
+            }
+
+            fclose(fp);
+            fclose(tempFile);
+
+            // Replace the original file with the updated file
+            if (rename("temp.txt", openingFile) != 0) {
+                perror("Failed to update record file");
+            }
+        }
+    } else {
+        // Add the new appointment directly
+        fp = fopen(openingFile, "a");
+        if (fp) {
+            fprintf(fp, "OpenAppointment: %s\n", appointTime);
+            fclose(fp);
         } else {
-            FILE *file = fopen(openingFile, "a");
-            fprintf(fp, "\nOpenAppointment: %s", appointTime);
+            perror("Failed to append to record file");
         }
     }
-    
 
-    time(&rawtime);
-    timeinfo = localtime(&rawtime);
-    strcpy(appointTime, asctimeFormat(appointTime));
-
+    // Create a new appointment file
     snprintf(makingFile, sizeof(makingFile), "%s/%s_Appointment.txt", reserveDir, appointTime);
     fp = fopen(makingFile, "w");
-    fprintf(fp, "Appoint by Dr.%s\nIssue on %s\nAppoint on %s", 
-                a.doctorName, asctime(timeinfo), appointTime
-            );
-    fclose(fp);
+    if (fp) {
+        time(&rawtime);
+        timeinfo = localtime(&rawtime);
+        fprintf(fp, "Appoint by Dr.%s\nIssue on %s\nAppoint on %s", 
+                a.doctorName, asctime(timeinfo), appointTime);
+        fclose(fp);
+    } else {
+        perror("Failed to create appointment file");
+    }
 
-
+    // Update doctor folder with new appointment
     snprintf(makingFile, sizeof(makingFile), "DoctorFolder/%s_%s/%s", a.doctorID, a.doctorName, appointTime);
     fp = fopen(makingFile, "w");
-    fclose(fp);
-
+    if (fp) fclose(fp);
+    else perror("Failed to update doctor folder");
 }
+
 
 int AvailableCheck(int date, int month, int year, int hour){
     struct dateTimeStruct{
