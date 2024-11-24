@@ -90,7 +90,7 @@ void makeAppointment() {
         nameSimplified = strtok(NULL, "_");
         nameSimplified = strtok(nameSimplified, "/");
         strcpy(a.name, nameSimplified);
-        printf("Hello, %s\n", a.name);
+        printf("Patient's name, %s\n", a.name);
 
         // Input date
         printf("Enter date you want to make an appointment (DD MM YYYY): ");
@@ -110,6 +110,40 @@ void makeAppointment() {
             // goto retry;
             continue;
         }
+
+        printf("Appointment for which doctor?\n");
+        dir = opendir("DoctorFolder");
+        if (dir == NULL) {
+            printf("Error: DoctorFolder directory does not exist.\n");
+            continue;
+        } else {
+            while ((entry = readdir(dir)) != NULL) {
+                char* simplifyID = strtok(entry->d_name, "_");
+                if(strcmp(simplifyID, "0") != 0 && strcmp(simplifyID, ".") != 0 && strcmp(simplifyID, "..") != 0) {    
+                    printf("%s) ", simplifyID);
+                    simplifyID = strtok(NULL, "_");
+                    if (simplifyID != NULL) {
+                        printf("%s\n", simplifyID);
+                    }
+                }
+            }
+        }
+
+        scanf("%s", a.doctorID);
+
+        rewinddir(dir); // Reset directory stream
+        while ((entry = readdir(dir)) != NULL) {
+            char* simplifyID = strtok(entry->d_name, "_");
+            if(strcmp(simplifyID, a.doctorID) == 0 ) {    
+                simplifyID = strtok(NULL, "_");
+                if (simplifyID != NULL) {
+                    strcpy(a.doctorName, simplifyID);
+                }
+            }
+        }
+        closedir(dir);
+
+        printf("Doctor's name: %s\n", a.doctorName);
 
         // Display available times
         printf("Available time on %02d/%02d/%02d:\n", a.date, a.month, a.year);
@@ -144,38 +178,6 @@ void makeAppointment() {
         } else {
             printf("Invalid selection.\n");
         }
-
-        printf("Appointment for which doctor?\n");
-        dir = opendir("DoctorFolder");
-        if (dir == NULL) {
-            printf("Error: DoctorFolder directory does not exist.\n");
-            continue;
-        } else {
-            while ((entry = readdir(dir)) != NULL) {
-                char* simplifyID = strtok(entry->d_name, "_");
-                if(strcmp(simplifyID, "0") != 0 && strcmp(simplifyID, ".") != 0 && strcmp(simplifyID, "..") != 0) {    
-                    printf("%s) ", simplifyID);
-                    simplifyID = strtok(NULL, "_");
-                    if (simplifyID != NULL) {
-                        printf("%s\n", simplifyID);
-                    }
-                }
-            }
-        }
-
-        closedir(dir);
-        scanf("%s", a.doctorID);
-
-        while ((entry = readdir(dir)) != NULL) {
-                char* simplifyID = strtok(entry->d_name, "_");
-                if(strcmp(simplifyID, a.doctorID) == 0 ) {    
-                simplifyID = strtok(NULL, "_");
-                if (simplifyID != NULL) {
-                    strcpy(a.doctorName, simplifyID);
-                }
-            }
-        }
-
 
         printf("Do you confirm the appointment (Y/N): ");
         scanf("%c", &choice);
@@ -221,33 +223,202 @@ void AppointmentSaved() {
     strcpy(openingFile, reserveDir);
     sprintf(openingFile, "%s/record.txt", openingFile);
     
-    FILE *fp = fopen(openingFile, "a");
+    FILE *fp = fopen(openingFile, "r");
 
     char makingFile[256];
     strcpy(makingFile, reserveDir);
     char appointTime[20];
     sprintf(appointTime, "%d/%d/%d/%d_Appoint", a.date, a.month, a.year, a.hour);
-    printf("%s\n", appointTime);
+    
+    char buffer[128], readingAppointment[20];
+    while (fgets(buffer, 128, fp)) {
+        buffer[strcspn(buffer, "\n")] = 0; // Remove newline character
+
+        char* token = strtok(buffer, "w");
+        if (strcmp(token, "OpenAppointment:") == 0) {
+            token = strtok(NULL, " ");
+            strcpy(readingAppointment, token);
+        }
+    }
+    if (readingAppointment != NULL) {
+        char* token = strtok(buffer, "/");
+        char readingDate[3], readingMonth[3], readingYear[5], readingHour[3];
+        strcpy(readingDate, token);
+        token = strtok(NULL, "/");
+        strcpy(readingMonth, token);
+        token = strtok(NULL, "/");
+        strcpy(readingYear, token);
+        token = strtok(NULL, "/");
+        strcpy(readingHour, token);
+
+        struct tm refDate = {0};
+        refDate.tm_mday = atoi(readingDate);
+        refDate.tm_mon = atoi(readingMonth - 1);
+        refDate.tm_year = atoi(readingYear - 1900);
+        refDate.tm_hour = atoi(readingHour);
+
+        struct tm inputDate = {0};
+        inputDate.tm_mday = a.date;
+        inputDate.tm_mon = a.month - 1;
+        inputDate.tm_year = a.year - 1900;
+        inputDate.tm_hour = a.hour;
+
+        if (difftime(time(NULL), mktime(&refDate)) < difftime(time(NULL), mktime(&inputDate)) || difftime(time(NULL), mktime(&refDate)) < 0) {
+            char* moddingFile = dirSeek(a.id);
+            FILE *file = fopen(moddingFile, "w");
+            if (file != NULL) {
+                // Read existing content of the file
+                char buffer[1024];
+                FILE *tempFile = fopen("temp.txt", "w");
+                if (tempFile == NULL) {
+                    printf("Error: Cannot open temporary file\n");
+                } else {
+                    FILE *originalFile = fopen(moddingFile, "r");
+                    if (originalFile != NULL) {
+                        int found = 0;
+                        while (fgets(buffer, sizeof(buffer), originalFile)) {
+                            if (strncmp(buffer, "OpenAppointment:", 15) == 0) {
+                                fprintf(tempFile, "OpenAppointment: %s\n", appointTime);
+                                found = 1;
+                            } else {
+                                fputs(buffer, tempFile);
+                            }
+                        }
+                        if (!found) {
+                            fprintf(tempFile, "OpenAppointment: %s\n", appointTime);
+                        }
+                        fclose(originalFile);
+                    } else {
+                        fprintf(tempFile, "OpenAppointment: %s\n", appointTime);
+                    }
+                    fclose(tempFile);
+
+                    // Replace original file with temp file
+                    remove(moddingFile);
+                    rename("temp.txt", moddingFile);
+                }
+                fclose(file);
+            } else {
+                printf("Error: File not created\n");
+            }
+        } else {
+            FILE *file = fopen(openingFile, "a");
+            fprintf(fp, "\nOpenAppointment: %s", appointTime);
+        }
+    }
+    
+
     time(&rawtime);
     timeinfo = localtime(&rawtime);
+    strcpy(appointTime, asctimeFormat(appointTime));
 
-    snprintf(makingFile, sizeof(makingFile), "%s/%s_Appointment.txt", reserveDir, asctimeFormat(appointTime));
+    snprintf(makingFile, sizeof(makingFile), "%s/%s_Appointment.txt", reserveDir, appointTime);
     fp = fopen(makingFile, "w");
     fprintf(fp, "Appoint by Dr.%s\nIssue on %s\nAppoint on %s", 
-                a.doctorName, asctime(timeinfo), asctimeFormat(appointTime)
+                a.doctorName, asctime(timeinfo), appointTime
             );
+    fclose(fp);
+
+
+    snprintf(makingFile, sizeof(makingFile), "DoctorFolder/%s_%s/%s", a.doctorID, a.doctorName, appointTime);
+    fp = fopen(makingFile, "w");
     fclose(fp);
 
 }
 
 int AvailableCheck(int date, int month, int year, int hour){
-    for(int i=0; i<booking_amount;i++){
-        if(booking[i].date==date && booking[i].month==month && booking[i].year==year && booking[i].hour==hour){
-            return 0; //unavailable
-        }
+    struct dateTimeStruct{
+        char* day;
+        char* month;
+        char* date;
+        char* hour;
+        char* year;
+    };
+    struct dateTimeStruct dateTime;
+    struct dirent *entry;
+
+    char openFolder[100];
+    sprintf(openFolder, "DoctorFolder/%s_%s", a.doctorID, a.doctorName);
+
+    DIR *dir = opendir(openFolder);
+    if (dir == NULL) {
+        printf("Could not open directory: %s\n", openFolder);
+        return 0;
     }
-    return 1; //available
-}
+
+    while ((entry = readdir(dir)) != NULL) {
+        if (strcmp(entry->d_name, ".") != 0 && 
+            strcmp(entry->d_name, "..") != 0
+            )
+        {
+            dateTime.day = strtok(entry->d_name, " ");
+            dateTime.month = strtok(NULL, " ");
+            dateTime.date = strtok(NULL, " ");
+            dateTime.hour = strtok(NULL, " ");
+            dateTime.year = strtok(NULL, " ");
+            dateTime.year = strtok(dateTime.year, "_");
+
+
+            struct tm inputDate = {0};
+            if (dateTime.date != NULL) {
+                inputDate.tm_mday = atoi(dateTime.date);
+            }
+            if (dateTime.month != NULL) {
+                if (strcmp(dateTime.month, "January") == 0) {
+                    inputDate.tm_mon = 1;
+                } else if (strcmp(dateTime.month, "February") == 0) {
+                    inputDate.tm_mon = 2;
+                } else if (strcmp(dateTime.month, "March") == 0) {
+                    inputDate.tm_mon = 3;
+                } else if (strcmp(dateTime.month, "April") == 0) {
+                    inputDate.tm_mon = 4;
+                } else if (strcmp(dateTime.month, "May") == 0) {
+                    inputDate.tm_mon = 5;
+                } else if (strcmp(dateTime.month, "June") == 0) {
+                    inputDate.tm_mon = 6;
+                } else if (strcmp(dateTime.month, "July") == 0) {
+                    inputDate.tm_mon = 7;
+                } else if (strcmp(dateTime.month, "August") == 0) {
+                    inputDate.tm_mon = 8;
+                } else if (strcmp(dateTime.month, "September") == 0) {
+                    inputDate.tm_mon = 9;
+                } else if (strcmp(dateTime.month, "October") == 0) {
+                    inputDate.tm_mon = 10;
+                } else if (strcmp(dateTime.month, "November") == 0) {
+                    inputDate.tm_mon = 11;
+                } else if (strcmp(dateTime.month, "December") == 0) {
+                    inputDate.tm_mon = 12;   
+                }
+            }
+
+            if (dateTime.year != NULL) {
+                    inputDate.tm_year = atoi(dateTime.year);
+            }  
+
+            if (inputDate.tm_mday == date && inputDate.tm_mon == month && inputDate.tm_year == year && atoi(dateTime.hour) == hour) {
+                return 0;
+            } else {
+                return 1;
+            }
+            
+                closedir(dir); 
+                
+            }
+        }
+        return 1;
+    }
+
+    // char appointTime[20];
+    // sprintf(appointTime, "%d/%d/%d/%d_Appoint", a.date, a.month, a.year, a.hour);
+
+    // char doctorFilePath[256];
+    // snprintf(doctorFilePath, sizeof(doctorFilePath), "DoctorFolder/%s_%s/%s.txt", a.doctorID, a.doctorName, asctimeFormat(appointTime));
+    // if (access(doctorFilePath, F_OK) == 0){
+        
+    //     return 0;
+    // } else {
+    //     return 1;
+    // }
 
 void AddAppointment(struct Appointment a){
     if(booking_amount>=MAX_APPOINTMENTS){

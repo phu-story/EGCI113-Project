@@ -4,7 +4,7 @@
 
 void patientRegistraion() {
     struct PatientDataStruct{
-        char FirstName[30], LastName[30];
+        char FirstName[30], LastName[30], dobDate[3], dobMonth[3], dobYear[5];
         char id[6];
     };
 
@@ -39,6 +39,9 @@ void patientRegistraion() {
     printf("Enter patient Last name: ");
     scanf("%s", PatientInfo.LastName);
 
+    printf("Enter patient Date of Birth (DD MM YYYY): ");
+    scanf("%s %s %s", PatientInfo.dobDate, PatientInfo.dobMonth, PatientInfo.dobYear);
+
     if (strlen(PatientInfo.id) != 6) {
         printf("Press any key to continue\n");
         system("clear");
@@ -64,6 +67,7 @@ void patientRegistraion() {
             fprintf(file, "PatientID: %s\n", PatientInfo.id);
             fprintf(file, "PatientName: %s\n", PatientInfo.FirstName);
             fprintf(file, "PatientLastName: %s\n", PatientInfo.LastName);
+            fprintf(file, "PatientDOB: %s %s %s\n", PatientInfo.dobDate, PatientInfo.dobMonth, PatientInfo.dobYear);
             fclose(file);
         } else {
             printf("Error: File not created\n");

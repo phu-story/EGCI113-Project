@@ -34,7 +34,13 @@ void patientView(char id[6]) {
     FILE *file = fopen(openingFile, "r");
     char buffer[128];
 
-    char readingID[30], readingFirstName[30], readingLastName[30], readingAppointment[30];
+    char readingID[30], 
+        readingFirstName[30], 
+        readingLastName[30], 
+        readingDobDay[3],
+        readingDobMonth[3], 
+        readingDobYear[5], 
+        readingAppointment[20];
 
     // rewind(file);
 
@@ -55,6 +61,15 @@ void patientView(char id[6]) {
             token = strtok(NULL, " ");
             strcpy(readingLastName, token);
         }
+        if (strcmp(token, "PatientDOB:") == 0) {
+            token = strtok(NULL, " ");
+            strcpy(readingDobDay, token);
+            token = strtok(NULL, " ");
+            strcpy(readingDobMonth, token);
+            token = strtok(NULL, " ");
+            strcpy(readingDobYear, token);
+        }
+        
         if (strcmp(token, "OpenAppointment:") == 0) {
             token = strtok(NULL, " ");
             strcpy(readingAppointment, token);
@@ -62,9 +77,39 @@ void patientView(char id[6]) {
         
     }
 
+    // printf("%s\n", readingAppointment);
+
     printf("ID: %s\n", readingID);
     printf("Name: %s %s\n", readingFirstName, readingLastName);
-    printf("Appointment: %s\n", asctimeFormat(readingAppointment));
+    printf("Date of Birth: %s %s %s\n", readingDobDay, readingDobMonth, readingDobYear);
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+
+    int currentYear = tm.tm_year + 1900;
+    int currentMonth = tm.tm_mon + 1;
+    int currentDay = tm.tm_mday;
+
+    int ageYears = currentYear - atoi(readingDobYear);
+    int ageMonths = currentMonth - atoi(readingDobMonth);
+    int ageDays = currentDay - atoi(readingDobDay);
+
+    if (ageDays < 0) {
+        ageDays += 30; // Approximate days in a month
+        ageMonths--;
+    }
+
+    if (ageMonths < 0) {
+        ageMonths += 12;
+        ageYears--;
+    }
+
+    printf("Age: %d years %d months %d days old\n", ageYears, ageMonths, ageDays);
+
+    if (strcmp(readingAppointment, "") != 0) {
+        printf("Appointment: %s\n", asctimeFormat(readingAppointment));
+    } else {
+        printf("No appointment\n");
+    }
 
     fclose(file);
     

@@ -5,13 +5,14 @@
 #include <unistd.h>
 
 char* directoryRead(char id[6]);
-void modifiedFile(char*, char*, char*);
+void modifiedFile(char*, char*, char*, char*, char*, char*);
 
 
 void patientModification() {
 
     struct PatientDataStruct{
             char FirstName[30], LastName[30];
+            char DobDay[3], DobMonth[3], DobYear[5];
             char id[6];
     };
     struct PatientDataStruct PatientData;
@@ -40,6 +41,7 @@ void patientModification() {
             goto retry;
         } else if(recordsDir != NULL) {
             char newFirstName[30], newLastName[30];
+            char newDate[3], newMonth[3], newYear[5];
             int selectingField;
 
             FILE *file = fopen(recordsDir, "r");
@@ -70,6 +72,14 @@ void patientModification() {
                         strcpy(PatientData.LastName, token);
                     }
                 }
+                if (strcmp(token, "PatientDOB:") == 0) {
+                    token = strtok(NULL, " ");
+                    strcpy(PatientData.DobDay, token);
+                    token = strtok(NULL, " ");
+                    strcpy(PatientData.DobMonth, token);
+                    token = strtok(NULL, " ");
+                    strcpy(PatientData.DobYear, token);
+                }
                 
             }
 
@@ -80,30 +90,37 @@ void patientModification() {
             printf("What do you want to modify?\n");
             printf("1) First Name\n");
             printf("2) Last Name\n");
-            printf("3) Both\n");
+            printf("3) Date of Birth\n");
+            printf("4) All Fields\n");
             printf("Press '0' to quit or any other key to exit.\n");
             scanf("%d", &selectingField);
 
             if (selectingField == 1) {
                 printf("Enter new first name: ");
                 scanf("%s", newFirstName);
-                modifiedFile(PatientData.id, newFirstName, PatientData.LastName);
+                modifiedFile(PatientData.id, newFirstName, PatientData.LastName, PatientData.DobDay, PatientData.DobMonth, PatientData.DobYear);
                 // system("clear");
                 printf("Patient data modified\n");
                 printf("New Name: %s %s\n\n", newFirstName, PatientData.LastName);
             } else if (selectingField == 2) {
                 printf("Enter new last name: ");
                 scanf("%s", newLastName);
-                modifiedFile(PatientData.id, PatientData.FirstName, newLastName);
+                modifiedFile(PatientData.id, PatientData.FirstName, newLastName, PatientData.DobDay, PatientData.DobMonth, PatientData.DobYear);
                 system("clear");
                 printf("Patient data modified\n");
                 printf("New Name: %s %s\n\n", PatientData.FirstName, newLastName);
             } else if (selectingField == 3) {
+                printf("Enter new Date of Birth: ");
+                scanf("%s %s %s", newDate, newMonth, newYear);
+                modifiedFile(PatientData.id, PatientData.FirstName, PatientData.LastName, newDate, newMonth, newYear);
+            } else if (selectingField == 4) {
                 printf("Enter new first name: ");
                 scanf("%s", newFirstName);
                 printf("Enter new last name: ");
                 scanf("%s", newLastName);
-                modifiedFile(PatientData.id, newFirstName, newLastName);
+                printf("Enter new Date of Birth: ");
+                scanf("%s %s %s", newDate, newMonth, newYear);
+                modifiedFile(PatientData.id, newFirstName, newLastName, newDate, newMonth, newYear);
                 system("clear");
                 printf("Patient data modified\n");
                 printf("New Name: %s %s\n\n", newFirstName, newLastName);
@@ -183,7 +200,7 @@ char* directoryRead(char* id) {
     fclose(file);
 }
 
-void modifiedFile(char* id, char* newName, char* newLastName) {
+void modifiedFile(char* id, char* newName, char* newLastName, char* newDate, char* newMonth, char* newYear) {
     struct dirent *entry;
 
     char oldPath[128];
@@ -211,6 +228,7 @@ void modifiedFile(char* id, char* newName, char* newLastName) {
         fprintf(file, "PatientID: %s\n", id);
         fprintf(file, "PatientName: %s\n", newName);
         fprintf(file, "PatientLastName: %s\n", newLastName);
+        fprintf(file, "PatientDOB: %s %s %s\n", newDate, newMonth, newYear);
         fclose(file);
     } else {
         printf("Error: File not created\n");

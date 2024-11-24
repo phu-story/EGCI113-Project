@@ -84,16 +84,6 @@ void appointmentNote() {
 
             time_t inputTime = mktime(&inputDate);
             time_t currentTime = time(NULL);
-
-            // if (difftime(inputTime, currentTime) > 0 && difftime(inputTime, currentTime) <= 86400){
-            //     printf("%d) Within 24 hours at %s\n", count, dateTime.hour);
-            //     count++;
-            //     noting[count][0] = dateTime.day;
-            //     noting[count][1] = dateTime.month;
-            //     noting[count][2] = dateTime.date;
-            //     noting[count][3] = dateTime.hour;
-            //     noting[count][4] = dateTime.year;
-            // }
             
             if (difftime(inputTime, currentTime) > 0 ){
                 printf("%d) %s/%s/%s at %s\n", count, dateTime.date, dateTime.month, dateTime.year, dateTime.hour);
@@ -124,7 +114,7 @@ void appointmentNote() {
         int c;
         while ((c = getchar()) != '\n' && c != EOF); // Clear input buffer
         fgets(note, sizeof(note), stdin);
-        fprintf(fp, "%s", note);
+        fprintf(fp, "\n%s", note);
         printf("Note added(press enter to continue)\n");
     }
 

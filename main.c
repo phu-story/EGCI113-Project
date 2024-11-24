@@ -62,7 +62,7 @@ int main() {
 
     login();
     // adminMenu();
-    // patientView("111111");
+    // patientView("333333");
     // patientModification();
     // makeAppointment();
     // printf("%s", dirSeek("111111"));

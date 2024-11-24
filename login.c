@@ -17,7 +17,7 @@ void login() {
 
         printf("Select login option\n");
         printf("1) 6-digit ID \n");
-        printf("2) First & Last name \n");
+        // printf("2) First & Last name \n");
         printf("Press '0' to quit or any other key to exit.\n");
 
         option = getchar();
@@ -41,6 +41,10 @@ void login() {
                             scanf("%s", password);
                             if (strcmp(password, "admin") == 0) {
                                 adminMenu();
+                            } else {
+                                system("clear");
+                                printf("Invalid password\n");
+                                login();
                             }
                             break;
                         } else {
@@ -50,26 +54,27 @@ void login() {
                     }
                 }
             }
-        } else if(option == '2') {
-            printf("Enter your First name: ");
-            scanf("%s", PatientData.FirstName);
-            printf("Enter your Last name: ");
-            scanf("%s", PatientData.LastName);
-            printf("Name: %s, %s", PatientData.FirstName, PatientData.LastName);
+        
+        // } else if(option == '2') {
+        //     printf("Enter your First name: ");
+        //     scanf("%s", PatientData.FirstName);
+        //     printf("Enter your Last name: ");
+        //     scanf("%s", PatientData.LastName);
+        //     printf("Name: %s, %s", PatientData.FirstName, PatientData.LastName);
             
-            DIR *dir = opendir("PatientFolder");
-            if (dir != NULL) {
-                while ((entry = readdir(dir)) != NULL) {
-                    char* simplifyName = strtok(entry->d_name, "_");
-                    simplifyName = strtok(NULL, "_");
+        //     DIR *dir = opendir("PatientFolder");
+        //     if (dir != NULL) {
+        //         while ((entry = readdir(dir)) != NULL) {
+        //             char* simplifyName = strtok(entry->d_name, "_");
+        //             simplifyName = strtok(NULL, "_");
 
-                    if (simplifyName != NULL && strcmp(simplifyName, PatientData.FirstName) == 0) {
+        //             if (simplifyName != NULL && strcmp(simplifyName, PatientData.FirstName) == 0) {
 
-                        // To-do <-----------------------------
+        //                 // To-do <-----------------------------
                         
-                    }
-                }
-            }
+        //             }
+        //         }
+        //     }
         } else if (option == '0') {
             printf("Are you sure you want to quit? (y/n): ");
             char quit = getchar();
