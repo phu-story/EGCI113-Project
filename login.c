@@ -49,7 +49,10 @@ void login() {
                             break;
                         } else {
                             patientView(PatientData.id);
-                            break;
+                            char quit;
+                            printf("Enter any thing to continue\n");
+                            scanf(" %c", &quit);
+
                         }
                     }
                 }

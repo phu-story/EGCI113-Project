@@ -22,18 +22,23 @@ void doctorRegistration() {
         adminMenu();
     }
 
+    int currentId = 1;
     DIR *dir = opendir("DoctorFolder");
-        if (dir != NULL) {
-            while ((entry = readdir(dir)) != NULL) {
-                char* simplifyNumber = strtok(entry->d_name, "_");
+    if (dir != NULL) {
+        while ((entry = readdir(dir)) != NULL) {
+            char* simplifyNumber = strtok(entry->d_name, "_");
 
-
-                if (simplifyNumber != NULL) {
-                    int idNumber = atoi(simplifyNumber) + 1;
-                    sprintf(DoctorData.id, "%d", idNumber);
+            if (simplifyNumber != NULL) {
+                int idNumber = atoi(simplifyNumber);
+                
+                if (idNumber >= currentId) {
+                    currentId = idNumber + 1;
                 }
             }
         }
+        closedir(dir);
+    }
+    sprintf(DoctorData.id, "%d", currentId);
 
     printf("Enter doctor's Last name: ");
     scanf("%s", DoctorData.LastName);
@@ -46,11 +51,11 @@ void doctorRegistration() {
 
 
     char creatingFolder[100];
-    sprintf(creatingFolder, "DoctorFolder/%s_%s", DoctorData.id, DoctorData.FirstName);
+    sprintf(creatingFolder, "DoctorFolder/%d_%s", currentId, DoctorData.FirstName);
 
     if (mkdir(creatingFolder, 0777) == 0) {
         char creatingFile[100];
-        sprintf(creatingFile, "PatientFolder/%s_%s/record.txt", DoctorData.id, DoctorData.FirstName);
+        sprintf(creatingFile, "PatientFolder/%d_%s/record.txt", currentId, DoctorData.FirstName);
 
         printf("Registration: Folder created\n");
         FILE *file = fopen(creatingFile, "w");

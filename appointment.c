@@ -114,8 +114,8 @@ void makeAppointment() {
 
         if (difftime(inputTime, currentTime) < 0) {
             printf("You cannot book an appointment for a past date.\n");
-            // goto retry;
-            continue;
+            goto retry;
+            // continue;
         }
 
         printf("Appointment for which doctor?\n");
@@ -124,9 +124,11 @@ void makeAppointment() {
             printf("Error: DoctorFolder directory does not exist.\n");
             continue;
         } else {
+            int doctorFound = 0;
             while ((entry = readdir(dir)) != NULL) {
                 char* simplifyID = strtok(entry->d_name, "_");
                 if(strcmp(simplifyID, "0") != 0 && strcmp(simplifyID, ".") != 0 && strcmp(simplifyID, "..") != 0) {    
+                    doctorFound = 1;
                     printf("%s) ", simplifyID);
                     simplifyID = strtok(NULL, "_");
                     if (simplifyID != NULL) {
@@ -134,8 +136,12 @@ void makeAppointment() {
                     }
                 }
             }
+            if (doctorFound == 0) {
+                printf("No doctors available.\n");
+                goto retry;
+            }
         }
-
+        
         scanf("%s", a.doctorID);
 
         rewinddir(dir); // Reset directory stream

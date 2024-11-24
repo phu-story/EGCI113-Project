@@ -60,13 +60,14 @@ int main() {
 
     system("clear");
 
-    login();
+    // login();
     // adminMenu();
     // patientView("333333");
     // patientModification();
-    // makeAppointment();
+    makeAppointment();
     // printf("%s", dirSeek("111111"));
     // appointmentNote();
+    // doctorRegistration();
 
     // remove("PatientFolder/111111_bro/Sun May 12 10:00:00 2006_Appointment.txt");
     
