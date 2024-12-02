@@ -3,6 +3,7 @@
 #include <dirent.h>
 #include <string.h>
 #include <unistd.h>
+#include "patient.h"
 
 char* directoryRead(char id[6]);
 void modifiedFile(char*, char*, char*, char*, char*, char*);
