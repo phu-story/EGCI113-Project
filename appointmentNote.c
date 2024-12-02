@@ -3,6 +3,7 @@
 #include <dirent.h>
 #include <string.h>
 #include <time.h>
+#include "appointmentNote.h"
 
 void adminMenu();
 
