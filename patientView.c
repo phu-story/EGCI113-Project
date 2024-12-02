@@ -3,6 +3,7 @@
 #include <dirent.h>
 #include <string.h>
 #include <time.h>
+#include "patient.h"
 
 char* asctimeFormat(char*);
 
