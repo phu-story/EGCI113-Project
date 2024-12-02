@@ -3,6 +3,7 @@
 #include <dirent.h>
 #include <string.h>
 #include "patient.h"
+#include "dirSeek.h"
 
 struct PatientDataStruct PatientData;
 
