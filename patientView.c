@@ -4,6 +4,7 @@
 #include <string.h>
 #include <time.h>
 #include "patient.h"
+#include "patientView.h"
 
 char* asctimeFormat(char*);
 
