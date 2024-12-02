@@ -1,9 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <dirent.h>
 #include <string.h>
-
-void adminMenu();
-void patientView();
+#include "login.h"
+#include "adminMenu.h"
+#include "patientView.h"
 
 void login() {
     struct PatientDataStruct{
