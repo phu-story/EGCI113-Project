@@ -5,10 +5,9 @@ struct PatientDataStruct {
     char FirstName[30];
     char LastName[30];
     char id[6];
+    char dobDate[3];
+    char dobMonth[3];
+    char dobYear[5];
 };
 
-// Prototype
-void patientView(char id[6]);
-void patientRegistration();
-
-#endif // PATIENT_H
+#endif 
