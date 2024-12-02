@@ -7,16 +7,16 @@
 #include <unistd.h>
 
 // Import Function
-#include "login.c"
-#include "adminMenu.c"
-#include "doctorRegistration.c"
-#include "patientRegistration.c"
-#include "patientView.c"
-#include "patientModification.c"
-#include "dirSeek.c"
-#include "appointment.c"
-#include "appointmentNote.c"
-#include "asctimeFormat.c"
+#include "login.h"
+#include "adminMenu.h"
+#include "doctorRegistration.h"
+#include "patientRegistration.h"
+#include "patientView.h"
+#include "patientModification.h"
+#include "dirSeek.h"
+#include "appointment.h"
+#include "appointmentNote.h"
+#include "asctimeFormat.h"
 
 #define FolderName "PatientFolder"
 
