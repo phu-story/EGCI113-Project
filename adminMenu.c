@@ -1,64 +1,49 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
-
-// Function prototype declaration
-void patientRegistraion();
-void patientModification();
-void makeAppointment();
-void doctorRegistration();
-void appointmentNote();
-void login();
+#include "adminMenu.h"
+#include "patientRegistration.h"
+#include "patientModification.h"
+#include "appointment.h"
+#include "appointmentNote.h"
+#include "doctorRegistration.h"
 
 void adminMenu() {
-    struct PatientDataStruct{
-        char FirstName[30], LastName[30];
-        char id[6];
-    };
-
-    struct PatientDataStruct PatientInfo;
-    struct dirent *entry;
-
-    while(1) {
+    while (1) {
         system("clear");
-
         printf("Welcome, admin\n");
-        
-        char option;
-        
-        printf("Patient Management Section\n");
-        printf("1) Patient Regitration: \n");
-        printf("2) Patient records update: \n");
-        printf("3) Making patient appointment: \n");
+        printf("1) Patient Registration\n");
+        printf("2) Patient Modification\n");
+        printf("3) Make Appointment\n");
+        printf("4) Doctor Registration\n");
+        printf("5) Appointment Notes\n");
+        printf("0) Logout\n");
+        printf("Enter your choice: ");
 
-        printf("-----------------------------\n");
+        char choice;
+        scanf(" %c", &choice);
 
-        // printf("Doctor Management Section\n");
-        printf("4) Doctor Registration: \n");
-        printf("5) Appointment note: \n");
-
-        printf("Press '0' to quit\n");
-        printf("What do you want to do?: ");
-
-        option = getchar();
-        
-        if (option == '0') {
-            system("clear");
-            login();
-        } else if(option == '1') {
-            patientRegistraion();
-        } else if(option == '2') {
-            patientModification();
-        } else if(option == '3') {
-            makeAppointment();
-        } else if (option == '4') {
-            doctorRegistration();
-        } else if (option == '5') {
-            appointmentNote();
-        } else {
-            system("clear");
-            printf("Invalid input\n");
-            adminMenu();
-        } 
+        switch (choice) {
+            case '1':
+                patientRegistraion();
+                break;
+            case '2':
+                patientModification();
+                break;
+            case '3':
+                makeAppointment();
+                break;
+            case '4':
+                doctorRegistration();
+                break;
+            case '5':
+                appointmentNote();
+                break;
+            case '0':
+                return;
+            default:
+                printf("Invalid choice. Try again.\n");
+                break;
+        }
     }
 }
