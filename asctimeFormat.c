@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "asctimeFormat.h"
 
 char* asctimeFormat(char* readingAppointment){
     char *appointmentArr[4];
