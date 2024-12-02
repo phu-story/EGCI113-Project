@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
-#include "patient.h"
+#include "patient.h"         
+#include "patientRegistration.h"
+#include "adminMenu.h"
 
 void patientRegistraion() {
     struct PatientDataStruct{
