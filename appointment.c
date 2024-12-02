@@ -4,6 +4,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <dirent.h>
+#include "appointment.h"
 
 #define FILENAME "Appointment_schedule.txt"
 #define START_HR 8
