@@ -26,7 +26,7 @@ void patientModification() {
         struct dirent *entry;
         char* recordsDir;
 
-        printf("Enter 6-digit id(Press '0' to exit): ");
+        printf("Enter 6-digit id  (Enter 0 to exit): ");
         scanf("%s", PatientData.id);
         printf("ID: %s\n", PatientData.id);
         if (strcmp(PatientData.id, "0") == 0) {
@@ -115,7 +115,7 @@ void patientModification() {
                 printf("Patient data modified\n");
                 printf("New Name: %s %s\n\n", PatientData.FirstName, newLastName);
             } else if (selectingField == 3) {
-                printf("Enter new Date of Birth: ");
+                printf("Enter new Date of Birth (DD MM YYYY): ");
                 scanf("%s %s %s", newDate, newMonth, newYear);
 
                 if (atoi(newDate) > 31 || atoi(newMonth) > 12) {
@@ -131,7 +131,7 @@ void patientModification() {
                 scanf("%s", newFirstName);
                 printf("Enter new last name: ");
                 scanf("%s", newLastName);
-                printf("Enter new Date of Birth: ");
+                printf("Enter new Date of Birth (DD MM YYYY): ");
                 scanf("%s %s %s", newDate, newMonth, newYear);
 
                 if (atoi(newDate) > 31 || atoi(newMonth) > 12) {

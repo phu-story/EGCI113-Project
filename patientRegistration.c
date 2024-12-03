@@ -13,7 +13,7 @@ void patientRegistraion() {
 
     retry:
 
-    printf("Enter patient ID(Enter 0 to exit): ");
+    printf("Enter patient ID (Enter 0 to exit): ");
     scanf("%6s", PatientInfo.id);
 
     DIR *dir = opendir("PatientFolder");

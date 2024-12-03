@@ -48,7 +48,7 @@ void makeAppointment() {
         timeinfo = localtime(&rawtime);
         printf("Current local time and date: %s", asctime(timeinfo));
 
-        printf("Enter your ID(enter 0 exit): ");
+        printf("Enter your ID (Enter 0 to exit): ");
         scanf("%s", a.id);
 
         if (strcmp(a.id, "0") == 0) {
@@ -92,12 +92,12 @@ void makeAppointment() {
 
         if(strcmp(nameSimplified, "admin") == 0) {
             system("clear");
-            printf("CANNOT ADPPOINT ADMIN\n");
+            printf("Error: admin can't not make an appointment.\n");
             goto retry;
         }
 
         strcpy(a.name, nameSimplified);
-        printf("Patient's name, %s\n", a.name);
+        printf("Patient's name: %s\n", a.name);
 
         // Input date
         printf("Enter date you want to make an appointment (DD MM YYYY): ");

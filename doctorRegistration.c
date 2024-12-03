@@ -15,7 +15,7 @@ void doctorRegistration() {
     system("clear");
     retry:
 
-    printf("Enter doctor's name(Enter 0 to exit): ");
+    printf("Enter doctor's name (Enter 0 to exit): ");
     scanf("%s", DoctorData.FirstName);
 
     if (strcmp(DoctorData.FirstName, "0") == 0) {

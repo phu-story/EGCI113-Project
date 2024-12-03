@@ -29,7 +29,7 @@ void appointmentNote() {
     system("clear");
     retry:
 
-    printf("Enter patient ID(Enter 0 to exit): ");
+    printf("Enter patient ID (Enter 0 to exit): ");
     scanf("%6s", PatientInfo.id);
 
     DIR *dir = opendir("PatientFolder");
@@ -112,6 +112,8 @@ void appointmentNote() {
         printf("No appointment found\n");
         goto retry;
     }
+    
+    enterNoteNumber:
     printf("Enter the note number: ");
     int noteNumber;
     scanf("%d", &noteNumber);
@@ -119,7 +121,7 @@ void appointmentNote() {
     if (noteNumber < 1 || noteNumber >= count) {
         system("clear");
         printf("Invalid note number\n");
-        goto retry;
+        goto enterNoteNumber;
     }
     
 
