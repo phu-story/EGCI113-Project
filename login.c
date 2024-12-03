@@ -6,7 +6,7 @@ void adminMenu();
 void patientView();
 
 void login() {
-    struct PatientDataStruct{
+    struct PatientDataStruct {
         char FirstName[30], LastName[30], id[6];
     };
     
@@ -52,7 +52,6 @@ void login() {
                             char quit;
                             printf("Enter any thing to continue\n");
                             scanf(" %c", &quit);
-
                         }
                     }
                 }

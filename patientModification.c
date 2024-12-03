@@ -7,10 +7,9 @@
 char* directoryRead(char id[6]);
 void modifiedFile(char*, char*, char*, char*, char*, char*);
 
-
 void patientModification() {
     system("clear");
-    struct PatientDataStruct{
+    struct PatientDataStruct {
             char FirstName[30], LastName[30];
             char DobDay[3], DobMonth[3], DobYear[5];
             char id[6];
@@ -60,13 +59,14 @@ void patientModification() {
                         strcpy(PatientData.id, token);
                     }
                 }
+
                 if (strcmp(token, "PatientName:") == 0) {
                     token = strtok(NULL, " ");
                     if (token != NULL) {
                         strcpy(PatientData.FirstName, token);
                         if(strcmp(PatientData.FirstName, "admin") == 0) {
                             system("clear");
-                            printf("CANNOT ADPPOINT ADMIN\n");
+                            printf("Error: Can't change admin name.\n");
                             goto retry;
                         }
                     }
@@ -149,18 +149,13 @@ void patientModification() {
                 printf("Invalid input\n");
                 goto retry;
             }
-            goto retry;
-            
+            goto retry;   
         }
-
     } 
-        
-        
-        
 }
 
 char* directoryRead(char* id) {
-    struct PatientDataStruct{
+    struct PatientDataStruct {
         char FirstName[30], LastName[30];
         char id[6];
     };
@@ -214,7 +209,6 @@ char* directoryRead(char* id) {
             token = strtok(NULL, " ");
             strcpy(readingLastName, token);
         }
-        
     }
 
     fclose(file);

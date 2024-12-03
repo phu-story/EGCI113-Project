@@ -12,7 +12,7 @@
 
 void BookingSystem(void);
 void AppointmentSaved(void);
-int AvailableCheck(int,int,int,int);
+int AvailableCheck(int, int, int, int);
 void AddAppointment();
 
 time_t rawtime;
@@ -49,7 +49,7 @@ void makeAppointment() {
         printf("Current local time and date: %s", asctime(timeinfo));
 
         printf("Enter your ID (Enter 0 to exit): ");
-        scanf("%s", a.id);
+        scanf("%s", a.id); //here
 
         if (strcmp(a.id, "0") == 0) {
             free(openingFile); // Free allocated memory
@@ -225,12 +225,12 @@ void makeAppointment() {
 
 void BookingSystem(){
     FILE * fp = fopen(openingFile, "r");
-    if(fp==NULL){ // no appointment yet (check)
+    if(fp==NULL) { // no appointment yet (check)
         return; //back
     }
     booking_amount  = 0;
-    for (booking_amount=0; fscanf(fp, "%49[^,],%d,%d,%d,%d", booking[booking_amount].name, &booking[booking_amount].date, &booking[booking_amount].month, &booking[booking_amount].year, &booking[booking_amount].hour) == 5 ; booking_amount++){ //check if the info was read
-        if (booking_amount>MAX_APPOINTMENTS){
+    for (booking_amount=0; fscanf(fp, "%49[^,],%d,%d,%d,%d", booking[booking_amount].name, &booking[booking_amount].date, &booking[booking_amount].month, &booking[booking_amount].year, &booking[booking_amount].hour) == 5; booking_amount++){ //check if the info was read
+        if (booking_amount > MAX_APPOINTMENTS){
             printf("Sorry, we have reached the maximum appointments.");
             break;
         }
@@ -462,8 +462,8 @@ int AvailableCheck(int date, int month, int year, int hour){
     // }
 
 void AddAppointment(struct Appointment a){
-    if(booking_amount>=MAX_APPOINTMENTS){
+    if(booking_amount >= MAX_APPOINTMENTS){
         printf("Sorry, we have reached the maximum appointments.");
     }
-    booking[booking_amount++]=a;
+    booking[booking_amount++] = a;
 }

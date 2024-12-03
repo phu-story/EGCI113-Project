@@ -25,7 +25,7 @@ int main() {
 
     char menu = 0;
 
-    if(access(FolderName, 0) == 0 ){
+    if(access(FolderName, 0) == 0 ) {
         printf("Initiation: Folder existed\n");
     } else if(access(FolderName, 0) == -1) {
         printf("Initiation: Folder not found\n");
@@ -42,7 +42,6 @@ int main() {
             printf("Error: File not created\n");
             return 0;
         }
-        
     }
 
     if(access("DoctorFolder", 0) == 0 ){

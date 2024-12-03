@@ -3,8 +3,7 @@
 #include <dirent.h>
 
 void doctorRegistration() {
-
-    struct DoctorDataStruct{
+    struct DoctorDataStruct {
         char FirstName[30], LastName[30];
         char id[6];
     };

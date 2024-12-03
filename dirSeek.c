@@ -6,7 +6,7 @@
 struct PatientDataStruct PatientData;
 
 char* dirSeek(char id[6]) {
-    struct PatientDataStruct{
+    struct PatientDataStruct {
             char FirstName[30], LastName[30];
             char id[6];
     };

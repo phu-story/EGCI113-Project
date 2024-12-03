@@ -7,12 +7,12 @@
 void adminMenu();
 
 void appointmentNote() {
-    struct PatientDataStruct{
+    struct PatientDataStruct {
         char FirstName[30], LastName[30];
         char id[6];
     };
 
-    struct dateTimeStruct{
+    struct dateTimeStruct {
         char* day;
         char* month;
         char* date;
@@ -119,11 +119,9 @@ void appointmentNote() {
     scanf("%d", &noteNumber);
 
     if (noteNumber < 1 || noteNumber >= count) {
-        system("clear");
         printf("Invalid note number\n");
         goto enterNoteNumber;
     }
-    
 
     char openFile[100];
     sprintf(openFile, "PatientFolder/%s_%s/%s %s %s %s %s_Appointment.txt", PatientInfo.id, PatientInfo.FirstName, noting[noteNumber][0], noting[noteNumber][1], noting[noteNumber][2], noting[noteNumber][3], noting[noteNumber][4]);
@@ -138,7 +136,7 @@ void appointmentNote() {
         while ((c = getchar()) != '\n' && c != EOF); // Clear input buffer
         fgets(note, sizeof(note), stdin);
         fprintf(fp, "\nNote: %s", note);
-        printf("Note added(press enter to continue)\n");
+        printf("Note added (press enter to continue)\n");
     }
 
     fclose(fp);
