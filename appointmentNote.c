@@ -93,7 +93,7 @@ void appointmentNote() {
             time_t inputTime = mktime(&inputDate);
             time_t currentTime = time(NULL);
             
-            if (difftime(inputTime, currentTime) > 0 ){
+            if (difftime(inputTime, currentTime) != 0){
                 printf("%d) %s/%s/%s at %s\n", count, dateTime.date, dateTime.month, dateTime.year, dateTime.hour);
                 noting[count][0] = dateTime.day;
                 noting[count][1] = dateTime.month;
