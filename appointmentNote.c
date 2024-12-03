@@ -124,7 +124,7 @@ void appointmentNote() {
     
 
     char openFile[100];
-    sprintf(openFile, "PatientFolder/%s_%s/%s %s %s %s %s_Appointment.txt", PatientInfo.id, PatientInfo.FirstName, noting[noteNumber][0], noting[noteNumber][1], noting[noteNumber][2], noting[noteNumber][3], noting[noteNumber][4]);
+    sprintf(openFile, "PatientFolder/%s_%s/%s  %s %s %s %s_Appointment.txt", PatientInfo.id, PatientInfo.FirstName, noting[noteNumber][0], noting[noteNumber][1], noting[noteNumber][2], noting[noteNumber][3], noting[noteNumber][4]);
     FILE *fp = fopen(openFile, "a");
     if (fp == NULL) {
         printf("Could not open file: %s\n", openFile);
