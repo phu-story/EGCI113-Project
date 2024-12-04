@@ -20,7 +20,7 @@ void appointmentNote() {
         char* year;
     };
 
-    char *noting[12][5];
+    char *noting[12][6];
 
     struct PatientDataStruct PatientInfo;
     struct dateTimeStruct dateTime;
@@ -89,6 +89,16 @@ void appointmentNote() {
             if (dateTime.year != NULL) {
                 inputDate.tm_year = atoi(dateTime.year) - 1900;
             }
+            if (dateTime.hour != NULL) {
+                char simplifyHour[10];
+                strcpy(simplifyHour, dateTime.hour);
+                char *tempHour = strtok(simplifyHour, ":");
+                inputDate.tm_hour = atoi(dateTime.hour);
+                char hourStr[3];
+                snprintf(hourStr, sizeof(hourStr), "%d", inputDate.tm_hour);
+                noting[count][5] = strdup(hourStr);
+                // printf("Here: %s\n", noting[count][5]);
+            }
 
             time_t inputTime = mktime(&inputDate);
             time_t currentTime = time(NULL);
@@ -100,6 +110,7 @@ void appointmentNote() {
                 noting[count][2] = dateTime.date;
                 noting[count][3] = dateTime.hour;
                 noting[count][4] = dateTime.year;
+
                 count++;
             }
         }
@@ -118,13 +129,46 @@ void appointmentNote() {
     int noteNumber;
     scanf("%d", &noteNumber);
 
+    int monthInt = 0;
+    if (strcmp(noting[noteNumber][1], "Jan") == 0) {
+        monthInt = 1;
+    } else if (strcmp(dateTime.month, "Feb") == 0) {
+        monthInt = 2;
+    } else if (strcmp(dateTime.month, "Mar") == 0) {
+        monthInt = 3;
+    } else if (strcmp(dateTime.month, "Apr") == 0) {
+        monthInt = 4;
+    } else if (strcmp(dateTime.month, "May") == 0) {
+        monthInt = 5;
+    } else if (strcmp(dateTime.month, "Jun") == 0) {
+        monthInt = 6;
+    } else if (strcmp(dateTime.month, "Jul") == 0) {
+        monthInt = 7;
+    } else if (strcmp(dateTime.month, "Aug") == 0) {
+        monthInt = 8;
+    } else if (strcmp(dateTime.month, "Sep") == 0) {
+        monthInt = 9;
+    } else if (strcmp(dateTime.month, "Oct") == 0) {
+        monthInt = 10;
+    } else if (strcmp(dateTime.month, "Nov") == 0) {
+        monthInt = 11;
+    } else if (strcmp(dateTime.month, "Dec") == 0) {
+        monthInt = 12;
+    }
+
+    char ascAppointTime[30];
+    snprintf(ascAppointTime, 30, "%s/%d/%s/%s", noting[noteNumber][2], monthInt, noting[noteNumber][4], noting[noteNumber][5]);
+    strcpy(ascAppointTime, asctimeFormat(ascAppointTime));
+    // printf("here; %s", ascAppointTime);
+
+
     if (noteNumber < 1 || noteNumber >= count) {
         printf("Invalid note number\n");
         goto enterNoteNumber;
     }
 
     char openFile[100];
-    sprintf(openFile, "PatientFolder/%s_%s/%s %s %s %s %s_Appointment.txt", PatientInfo.id, PatientInfo.FirstName, noting[noteNumber][0], noting[noteNumber][1], noting[noteNumber][2], noting[noteNumber][3], noting[noteNumber][4]);
+    sprintf(openFile, "PatientFolder/%s_%s/%s_Appointment.txt", PatientInfo.id, PatientInfo.FirstName, ascAppointTime);
     FILE *fp = fopen(openFile, "a");
     if (fp == NULL) {
         printf("Could not open file: %s\n", openFile);
