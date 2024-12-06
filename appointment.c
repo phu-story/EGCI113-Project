@@ -49,7 +49,7 @@ void makeAppointment() {
         printf("Current local time and date: %s", asctime(timeinfo));
 
         printf("Enter your ID (Enter 0 to exit): ");
-        scanf("%s", &a.id); //here
+        scanf("%s", a.id); //here
 
         if (strcmp(a.id, "0") == 0) {
             free(openingFile); // Free allocated memory
@@ -148,7 +148,7 @@ void makeAppointment() {
             }
         }
         
-        scanf("%s", &a.doctorID);
+        scanf("%s", a.doctorID);
 
         rewinddir(dir); // Reset directory stream
         while ((entry = readdir(dir)) != NULL) {

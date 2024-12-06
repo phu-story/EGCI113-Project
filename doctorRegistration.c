@@ -15,7 +15,7 @@ void doctorRegistration() {
     retry:
 
     printf("Enter doctor's name (Enter 0 to exit): ");
-    scanf("%s", &DoctorData.FirstName);
+    scanf("%s", DoctorData.FirstName);
 
     if (strcmp(DoctorData.FirstName, "0") == 0) {
         adminMenu();
@@ -40,7 +40,7 @@ void doctorRegistration() {
     sprintf(DoctorData.id, "%d", currentId);
 
     printf("Enter doctor's Last name: ");
-    scanf("%s", &DoctorData.LastName);
+    scanf("%s", DoctorData.LastName);
 
     if(strlen(DoctorData.FirstName) == 0 || strlen(DoctorData.LastName) == 0) {
         system("clear");

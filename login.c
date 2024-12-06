@@ -25,7 +25,7 @@ void login() {
 
         if(option == '1') {
             printf("Enter your 6-digit id: ");
-            scanf("%s", &PatientData.id);
+            scanf("%s", PatientData.id);
             printf("ID: %s\n", PatientData.id);
             
             DIR *dir = opendir("PatientFolder");
@@ -38,7 +38,7 @@ void login() {
                         if (simplifyID != NULL && strcmp(simplifyID, "admin") == 0) {
                             char password[30];
                             printf("Enter the password: ");
-                            scanf("%s", &password);
+                            scanf("%s", password);
                             if (strcmp(password, "admin") == 0) {
                                 adminMenu();
                             } else {
