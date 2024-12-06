@@ -33,7 +33,7 @@ int main() {
         if(mkdir(FolderName, 0777) == 0) {
             char password[30];
             printf("Set-Up admin password: ");
-            scanf("%s", &password);
+            scanf("%s", password);
             printf("Initiation: Folder created\n");
             char adminFolder[126];
             snprintf(adminFolder, 126, "PatientFolder/%s_admin", password);

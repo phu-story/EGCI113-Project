@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include <dirent.h>
 
-#define FILENAME "Appointment_schedule.txt"
 #define START_HR 8
 #define END_HR 18
 #define MAX_APPOINTMENTS 1000
@@ -18,7 +17,7 @@ void AddAppointment();
 time_t rawtime;
 struct tm * timeinfo;
 
-struct Appointment { //struct appointment info
+struct Appointment { // struct appointment info
     char id[6];
     char name[50];
     char doctorID[6];
@@ -31,7 +30,6 @@ struct Appointment { //struct appointment info
 
 struct Appointment a;
 struct Appointment booking[MAX_APPOINTMENTS];
-
 
 char *openingFile;
 char *reserveDir;
