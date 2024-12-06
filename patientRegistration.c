@@ -14,7 +14,7 @@ void patientRegistraion() {
     retry:
 
     printf("Enter patient ID (Enter 0 to exit): ");
-    scanf("%6s", PatientInfo.id);
+    scanf("%6s", &PatientInfo.id);
 
     DIR *dir = opendir("PatientFolder");
         if (dir != NULL) {
@@ -34,13 +34,13 @@ void patientRegistraion() {
     }
 
     printf("Enter patient First name: ");
-    scanf("%s", PatientInfo.FirstName);
+    scanf("%s", &PatientInfo.FirstName);
 
     printf("Enter patient Last name: ");
-    scanf("%s", PatientInfo.LastName);
+    scanf("%s", &PatientInfo.LastName);
 
     printf("Enter patient Date of Birth (DD MM YYYY): ");
-    scanf("%s %s %s", PatientInfo.dobDate, PatientInfo.dobMonth, PatientInfo.dobYear);
+    scanf("%s %s %s", &PatientInfo.dobDate, &PatientInfo.dobMonth, &PatientInfo.dobYear);
 
     if (strlen(PatientInfo.id) != 6) {
         printf("Press any key to continue\n");

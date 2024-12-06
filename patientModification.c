@@ -26,7 +26,7 @@ void patientModification() {
         char* recordsDir;
 
         printf("Enter 6-digit id  (Enter 0 to exit): ");
-        scanf("%s", PatientData.id);
+        scanf("%s", &PatientData.id);
         printf("ID: %s\n", PatientData.id);
         if (strcmp(PatientData.id, "0") == 0) {
             adminMenu();
@@ -102,21 +102,21 @@ void patientModification() {
 
             if (selectingField == 1) {
                 printf("Enter new first name: ");
-                scanf("%s", newFirstName);
+                scanf("%s", &newFirstName);
                 modifiedFile(PatientData.id, newFirstName, PatientData.LastName, PatientData.DobDay, PatientData.DobMonth, PatientData.DobYear);
                 // system("clear");
                 printf("Patient data modified\n");
                 printf("New Name: %s %s\n\n", newFirstName, PatientData.LastName);
             } else if (selectingField == 2) {
                 printf("Enter new last name: ");
-                scanf("%s", newLastName);
+                scanf("%s", &newLastName);
                 modifiedFile(PatientData.id, PatientData.FirstName, newLastName, PatientData.DobDay, PatientData.DobMonth, PatientData.DobYear);
                 system("clear");
                 printf("Patient data modified\n");
                 printf("New Name: %s %s\n\n", PatientData.FirstName, newLastName);
             } else if (selectingField == 3) {
                 printf("Enter new Date of Birth (DD MM YYYY): ");
-                scanf("%s %s %s", newDate, newMonth, newYear);
+                scanf("%s %s %s", &newDate, &newMonth, &newYear);
 
                 if (atoi(newDate) > 31 || atoi(newMonth) > 12) {
                     system("clear");
@@ -128,11 +128,11 @@ void patientModification() {
                 modifiedFile(PatientData.id, PatientData.FirstName, PatientData.LastName, newDate, newMonth, newYear);
             } else if (selectingField == 4) {
                 printf("Enter new first name: ");
-                scanf("%s", newFirstName);
+                scanf("%s", &newFirstName);
                 printf("Enter new last name: ");
-                scanf("%s", newLastName);
+                scanf("%s", &newLastName);
                 printf("Enter new Date of Birth (DD MM YYYY): ");
-                scanf("%s %s %s", newDate, newMonth, newYear);
+                scanf("%s %s %s", &newDate, &newMonth, &newYear);
 
                 if (atoi(newDate) > 31 || atoi(newMonth) > 12) {
                     system("clear");

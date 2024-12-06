@@ -30,7 +30,7 @@ void appointmentNote() {
     retry:
 
     printf("Enter patient ID (Enter 0 to exit): ");
-    scanf("%6s", PatientInfo.id);
+    scanf("%6s", &PatientInfo.id);
 
     DIR *dir = opendir("PatientFolder");
         if (dir != NULL) {
