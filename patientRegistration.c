@@ -16,6 +16,25 @@ void patientRegistraion() {
     printf("Enter patient ID (Enter 0 to exit): ");
     scanf("%6s", PatientInfo.id);
 
+    if (strlen(PatientInfo.id) != 6)
+    {
+        printf("Press any key to continue\n");
+        system("clear");
+        printf("Error: ID must be 6 digits\n");
+        goto retry; 
+    }
+
+    if (atoi(PatientInfo.id) < 0)
+    {
+        printf("Press any key to continue\n");
+        system("clear");
+        printf("Error: ID must be positive\n");
+        goto retry;
+    }
+    
+    
+    
+
     DIR *dir = opendir("PatientFolder");
         if (dir != NULL) {
             while ((entry = readdir(dir)) != NULL) {
